@@ -10,6 +10,13 @@ public class Organizacija {
 	private ArrayList<VirtualnaMasina> resursi;
 	
 	
+	public Organizacija(String ime, String opis) {
+		super();
+		this.ime = ime;
+		this.opis = opis;
+		this.korisnici = new ArrayList<Korisnik>();
+		this.resursi = new ArrayList<VirtualnaMasina>();
+	}
 	public String getIme() {
 		return ime;
 	}

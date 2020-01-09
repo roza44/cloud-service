@@ -13,6 +13,9 @@ public class Korisnik {
 	private Organizacija organizacija;
 	private Uloge uloga;
 	
+	public Korisnik() {
+	}
+
 	public Korisnik(String email, String lozinka, String ime, String prezime, Organizacija organizacija, Uloge uloga) {
 		super();
 		this.email = email;

@@ -7,6 +7,9 @@ public class KategorijaVM {
 	private double ram;
 	private int gpuJezgra;
 	
+	public KategorijaVM() {
+	}
+	
 	public KategorijaVM(String ime, int brojJezgara, double ram, int gpuJezgra) {
 		super();
 		this.ime = ime;
