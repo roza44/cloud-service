@@ -1,9 +1,5 @@
 package model;
 
-enum Uloge {
-	SUPER_ADMIN, ADMIN, KORISNIK;
-}
-
 public class Korisnik {
 	
 	private String email;
@@ -12,6 +8,10 @@ public class Korisnik {
 	private String prezime;
 	private Organizacija organizacija;
 	private Uloge uloga;
+	
+	public enum Uloge {
+		SUPER_ADMIN, ADMIN, KORISNIK;
+	}
 	
 	public Korisnik() {
 	}

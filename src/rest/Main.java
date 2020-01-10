@@ -7,6 +7,9 @@ import static spark.Spark.staticFiles;
 import java.io.File;
 import java.io.IOException;
 
+import controllers.UserController;
+import services.UserService;
+
 public class Main {
 
 	public static void main(String[] args) throws IOException {
@@ -16,7 +19,9 @@ public class Main {
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
-		post("/rest/login", (req, res) -> {return "radi";});
+		UserService.initialize();
+		
+		post("/rest/login", UserController.verifyLogin);
 
 	}
 

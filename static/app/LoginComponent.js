@@ -11,12 +11,15 @@ Vue.component("login", {
     <div>
         <table>
             <tr>
+                <td>Username</td>
                 <td><input type="text" v-model="username"></td>
             </tr>
             <tr>
-                <td><input type="text" v-model="password"></td>
+                <td>Password</td>
+                <td><input type="password" v-model="password"></td>
             </tr>
             <tr>
+                <td></td>
                 <td><button v-on:click="login">Uloguj se</button></td>
             </tr>
         </table>
@@ -32,8 +35,9 @@ Vue.component("login", {
                 //Koriscenje this u .then pozivu nije preporucljivo i zato kreiramo self
                 self = this;
                 axios
-                .post("rest/login", {"email": this.usernme, "lozinka": this.password})
-                .then(response => (alert(response.data)));
+                .post("rest/login", {"username": this.username, "password": this.password})
+                .then(response => (alert(response.data)))
+                .catch(function(error){alert(error)});
             }
         }
     }
