@@ -7,16 +7,12 @@ public class Korisnik {
 	private String ime;
 	private String prezime;
 	private Organizacija organizacija;
-	private Uloge uloga;
-	
-	public enum Uloge {
-		SUPER_ADMIN, ADMIN, KORISNIK;
-	}
+	private String uloga;
 	
 	public Korisnik() {
 	}
 
-	public Korisnik(String email, String lozinka, String ime, String prezime, Organizacija organizacija, Uloge uloga) {
+	public Korisnik(String email, String lozinka, String ime, String prezime, Organizacija organizacija, String uloga) {
 		super();
 		this.email = email;
 		this.lozinka = lozinka;
@@ -56,10 +52,10 @@ public class Korisnik {
 	public void setOrganizacija(Organizacija organizacija) {
 		this.organizacija = organizacija;
 	}
-	public Uloge getUloga() {
+	public String getUloga() {
 		return uloga;
 	}
-	public void setUloga(Uloge uloga) {
+	public void setUloga(String uloga) {
 		this.uloga = uloga;
 	}
 	

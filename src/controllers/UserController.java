@@ -2,6 +2,7 @@ package controllers;
 
 import com.google.gson.Gson;
 
+import model.Korisnik;
 import model.LoginInfo;
 import services.UserService;
 
@@ -14,9 +15,18 @@ public class UserController {
 	public static Route verifyLogin = (req,res) -> {
 		res.type("application/json");
 		LoginInfo li = g.fromJson(req.body(), LoginInfo.class);
-		if(UserService.exists(li.username, li.password))
+		if(UserService.checkLogin(li.username, li.password)) {
+			Korisnik k = UserService.getUser(li.username);
+			req.session(true).attribute("role", k.getUloga());
 			return "OK";
-		else
-			return "Invalid username or password!";	
+		} else {
+			return "Invalid username or password!";
+		}
+	};
+	
+	public static Route getInfo = (req,res) -> {
+		res.type("application/json");
+		String role = req.session(false).attribute("role");
+		return role;
 	};
 }

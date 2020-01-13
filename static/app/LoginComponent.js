@@ -35,10 +35,17 @@ Vue.component("login", {
                 //Koriscenje this u .then pozivu nije preporucljivo i zato kreiramo self
                 self = this;
                 axios
-                .post("rest/login", {"username": this.username, "password": this.password})
-                .then(response => (alert(response.data)))
+                .post("rest/Users/login", {"username": this.username, "password": this.password})
+                .then(response => (this.redirect(response)))
                 .catch(function(error){alert(error)});
             }
+        },
+
+        redirect : function(response) {
+            if(response.data == "OK")
+                this.$router.push("/dashboard")
+            else
+                alert(response.data);
         }
     }
 

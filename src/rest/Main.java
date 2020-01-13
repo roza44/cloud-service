@@ -2,6 +2,7 @@ package rest;
 
 import static spark.Spark.port;
 import static spark.Spark.post;
+import static spark.Spark.get;
 import static spark.Spark.staticFiles;
 
 import java.io.File;
@@ -21,7 +22,8 @@ public class Main {
 		
 		UserService.initialize();
 		
-		post("/rest/login", UserController.verifyLogin);
+		post("/rest/Users/login", UserController.verifyLogin);
+		get("/rest/Users/info", UserController.getInfo);
 
 	}
 
