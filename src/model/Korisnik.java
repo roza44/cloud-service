@@ -7,7 +7,9 @@ public class Korisnik {
 	private String ime;
 	private String prezime;
 	private Organizacija organizacija;
+	
 	private String uloga;
+	// admin, superadmin i user
 	
 	public Korisnik() {
 	}

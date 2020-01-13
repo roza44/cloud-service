@@ -7,13 +7,19 @@ Vue.component("dashboard", {
     },
 
     template: `
-        <div>
-            <p>Showing {{role}} dashboard</p>
+    <div v-if="role === 'superadmin'">
+        <!--Listanje organizacije-->
+        <org-list></org-list>
+        <button>Dodaj organizaciju</button>
+    </div>
 
-            <div v-if="role === 'admin'">
-                Ovo admin sme da vidi
-            </div>
-        </div>
+    <div v-if="role === 'admin'">
+        
+    </div>
+
+    <div v-if="role === 'user'">
+
+    </div>
     `
     ,
 
