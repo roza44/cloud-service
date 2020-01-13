@@ -1,4 +1,4 @@
-Vue.component("dashboard", {
+Vue.component("org-list", {
 
     data: function() {
         return {
@@ -7,19 +7,7 @@ Vue.component("dashboard", {
     },
 
     template: `
-    <div v-if="role === 'superadmin'">
-        <!--Listanje organizacije-->
-        <org-list></org-list>
-        <button>Dodaj organizaciju</button>
-    </div>
-
-    <div v-if="role === 'admin'">
         
-    </div>
-
-    <div v-if="role === 'user'">
-
-    </div>
     `
     ,
 
