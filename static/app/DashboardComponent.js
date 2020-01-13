@@ -8,7 +8,11 @@ Vue.component("dashboard", {
 
     template: `
         <div>
-            <p>{{role}}</p>
+            <p>Showing {{role}} dashboard</p>
+
+            <div v-if="role === 'admin'">
+                Ovo admin sme da vidi
+            </div>
         </div>
     `
     ,
