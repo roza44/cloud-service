@@ -1,13 +1,18 @@
-<table>
-    <tr>
-        <th>Ime</th>
-        <th>Opis</th>
-        <th>Slika</th>
-    </tr>
+<div>
+    <h3>Sve organizacije u sistemu</h3>
+    <table>
+        <tr>
+            <th>Ime</th>
+            <th>Opis</th>
+        </tr>
 
-    <tr v-for="org in organizations">
-        <td>{{org.ime}}</td>
-        <td>{{org.opis}}</td>
-        <td>{{org.slika}}</td>
-    </tr>
-</table>
+        <tr v-for="org in organizations">
+            <td>
+                <input type="text" v-model="currentOrg.ime">
+            </td>
+            <td>
+                <input class="opisOrg" type="text" v-model="currentOrg.opis">
+            </td>
+        </tr>
+    </table>
+</div>

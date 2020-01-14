@@ -12,10 +12,8 @@ public class UserService {
 	public static void initialize() {
 		users = new ArrayList<Korisnik>();
 		
-		Korisnik user = new Korisnik("roza44", "pass", "Jovan", "Bodroza",
-						new Organizacija("Organizacija", "Probna organizacija"), "admin");
-		
-		users.add(user);
+		users.add(new Korisnik("roza44", "pass", "Joca", "Boca", OrganizacijaService.getOrganizacija("Lambda kod"), "admin"));
+		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", null, "superadmin"));
 	}
 	
 	public static boolean checkLogin(String username, String password) {

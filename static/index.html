@@ -1,3 +1,13 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    input.grayInput, textarea.grayInput {
+        color: gray;
+    }
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +18,7 @@
 </head>
 <body>
     <div id="cloudService">
-        <h3>Cloud Service</h3>
+        <h1>Cloud Service</h1>
         <router-view></router-view>
     </div>
 
@@ -16,6 +26,7 @@
     <script src="js/vue-router.js"></script>
     <script src="js/axios.js"></script>
     <script src="app/LoginComponent.js"></script>
+    <script src="app/OrgListComponent.js"></script>
     <script src="app/DashboardComponent.js"></script>
     <script src="app/app.js"></script>
 

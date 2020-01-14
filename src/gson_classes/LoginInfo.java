@@ -1,4 +1,4 @@
-package model;
+package gson_classes;
 
 public class LoginInfo {
 	
