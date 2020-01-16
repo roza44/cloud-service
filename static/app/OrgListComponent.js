@@ -12,45 +12,40 @@ Vue.component("org-list", {
     <div>
         <h3>Sve organizacije u sistemu</h3>
         <table>
-            <tr>
-                <th>Ime</th>
-                <th>Opis</th>
-            </tr>
-
             <tr v-for="org in organizations">
-                <td>
-                    <div v-if="editingOrg === org">
-                        <input @keyup.enter="editOrg(null)" type="text" v-model="org.ime">
-                    </div>
+                <table>
+                    <tr>
+                        <td>
+                            <div v-if="editingOrg === org">
+                                <input @keydown.enter.prevent="editOrg(null)" type="text" v-model="org.ime">
+                            </div>
 
-                    <div v-else>
-                        <input class="grayInput" @click="editOrg(org)" type="text" v-model="org.ime" readonly>
-                    </div>
-                </td>
-                <td>
-                    <div v-if="editingOrg === org">
-                        <textarea @keyup.enter="editOrg(null)" rows="4" cols="50" v-model="org.opis">{{org.opis}}</textarea>
-                    </div>
+                            <div v-else>
+                                <input class="grayInput" @click="editOrg(org)" type="text" v-model="org.ime" readonly>
+                            </div>
+                        </td>
 
-                    <div v-else>
-                        <textarea class="grayInput" @click="editOrg(org)" rows="4" cols="50" v-model="org.opis" readonly>{{org.opis}}</textarea>
-                    </div>
-                    
-                    
-                </td>
+                        <td>
+                            <div v-if="editingOrg === org">
+                                <textarea @keydown.enter.prevent="editOrg(null)" rows="4" cols="50" v-model="org.opis">{{org.opis}}</textarea>
+                            </div>
+
+                            <div v-else>
+                                <textarea class="grayInput" @click="editOrg(org)" rows="4" cols="50" v-model="org.opis" readonly>{{org.opis}}</textarea>
+                            </div>
+                            
+                            <div v-if="editingOrg === org">
+                                <button @click="editOrg(null)">Potvrdi</button>
+                                <button @click="pullOrgs()">Poništi</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </tr>
-        </table>
 
-        <table>
             <tr>
-                <button v-if="editingOrg === null" @click="addOrg()">Dodaj</button>
-                <button v-else @click="addOrg()" disabled>Dodaj</button>
-                <br><br>
-            </tr>
-            <tr>
-                <td>
-                    <button @click="pullOrgs()">Poništi</button>
-                </td>
+                <button class="fullRect" v-if="editingOrg === null" @click="addOrg()">Dodaj</button>
+                <button class="fullRect" v-else @click="addOrg()" disabled>Dodaj</button>
             </tr>
         </table>
     </div>
@@ -76,29 +71,36 @@ Vue.component("org-list", {
             this.editOrg(org);
         },
 
+        switchOrgFocus: function(org) {
+            this.editingOrg = org;
+
+            if (org !== null) {
+                this.editingName = org.ime;
+            } else {
+                this.editingName = "";
+            }
+        },
+
         editOrg: function(org) {
             // If no org is currently selected, just switch
             if (this.editingOrg == null) {
-                this.editingOrg = org;
-                this.editingName = org.ime;
+                this.switchOrgFocus(org);
                 return;
             }
-
-            if (org !== null && this.editingName === "") {
-                // In the case of adding a new org
-                this.editingName = org.ime;
+            
+            // Check for invalid input
+            if (this.editingOrg.ime === "" || this.editingOrg.opis === "") {
+                alert("Ime i opis organizacije ne smeju ostati prazni!");
+                return;
             }
 
             // Update edited organization
             axios
+            // If it's a new org, posts straight to Organizations/, else posts to update route with previous name
             .post("rest/Organizations/" + this.editingName, this.editingOrg)
             .then(response => {
-                // Izmene uspesne, aktiviraj sledeci
-                this.editingOrg = org;
-
-                if (org !== null) {
-                    this.editingName = org.ime;
-                }
+                // Update successful, switch to next field
+                this.switchOrgFocus(org);
             })
             .catch(function(error){alert(error);});
             

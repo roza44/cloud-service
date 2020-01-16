@@ -17,13 +17,20 @@ public class OrganizacijaController {
 		return g.toJson(OrganizacijaService.getOrganizacije());
 	};
 	
+	public static Route insertOne = (req, res) -> {
+		res.type("application/json");
+		Organizacija org = g.fromJson(req.body(), Organizacija.class);
+		OrganizacijaService.add(org);
+		
+		return "OK";
+	};
+	
 	public static Route updateOne = (req, res) -> {
 		res.type("application/json");
 		String nameToFind = req.params("ime");
 		Organizacija newObj = g.fromJson(req.body(), Organizacija.class);
-		OrganizacijaService.updateOrInsert(nameToFind, newObj);
+		OrganizacijaService.update(nameToFind, newObj);
 		
-		res.status(200);
 		return "OK";
 	};
 	

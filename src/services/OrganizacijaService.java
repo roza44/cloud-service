@@ -1,16 +1,13 @@
 package services;
 import java.util.ArrayList;
 
+import helpers.FileHandler;
 import model.Organizacija;
 public class OrganizacijaService {
 	private static ArrayList<Organizacija> organizacije;
 	
 	public static void initialize() {
-		organizacije = new ArrayList<Organizacija>();
-		
-		organizacije.add(new Organizacija("Oblak hosting", "Kod nas nema promenljivog vremena!"));
-		organizacije.add(new Organizacija("Lambda kod", "Garantovane implementacije projekata koje koriste iskljucivo lambda funkcije."));
-		organizacije.add(new Organizacija("Cvarak pekara", "Prodajemo mnogo peciva i treba nam server da optimizuje testo."));
+		organizacije = FileHandler.loadOrgs();
 	}
 	
 	public static ArrayList<Organizacija> getOrganizacije() {
@@ -27,7 +24,14 @@ public class OrganizacijaService {
 		return null;
 	}
 	
-	public static void updateOrInsert(String name, Organizacija newObj) {
+	public static void add(Organizacija org) {
+		organizacije.add(org);
+		
+		// Save
+		helpers.FileHandler.save(organizacije);
+	}
+	
+	public static void update(String name, Organizacija newObj) {
 		Organizacija org = getOrganizacija(name);
 		if (org == null) {
 			// Create new
@@ -36,6 +40,8 @@ public class OrganizacijaService {
 			org.setIme(newObj.getIme());
 			org.setOpis(newObj.getOpis());
 		}
-			
+
+		// Save
+		helpers.FileHandler.save(organizacije);
 	}
 }

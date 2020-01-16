@@ -16,8 +16,6 @@ import services.UserService;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		
 		port(8080);
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
@@ -32,6 +30,7 @@ public class Main {
 		
 		// ORGANIZATIONS
 		get("rest/Organizations", OrganizacijaController.getAll);
+		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
 
 	}
