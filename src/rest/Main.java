@@ -24,6 +24,7 @@ public class Main {
 		
 		post("/rest/Users/login", UserController.verifyLogin);
 		get("/rest/Users/info", UserController.getInfo);
+		get("/rest/Users/logout", UserController.logout);
 
 	}
 

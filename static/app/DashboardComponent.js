@@ -20,8 +20,24 @@ Vue.component("dashboard", {
     <div v-if="role === 'user'">
 
     </div>
+
+    <div>
+        <button v-on:click="logut"></button>
+    </div>
     `
     ,
+
+    methods: {
+        logout : function () {
+            axios
+            .get("rest/Users/logut")
+            .then(response  => {
+                this.$router.push("/");
+            })
+            .cathc(function(error){alert(error);})
+        }
+
+    },
 
     mounted () {
         axios

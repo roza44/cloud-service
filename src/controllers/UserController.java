@@ -29,4 +29,10 @@ public class UserController {
 		String role = req.session(false).attribute("role");
 		return role;
 	};
+	
+	public static Route logout = (req,res) -> {
+		res.type("application/json");
+		req.session(false).removeAttribute("role");
+		return "Succssesfull logout!";
+	};
 }
