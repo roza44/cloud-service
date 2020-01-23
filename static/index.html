@@ -1,18 +1,3 @@
-<style>
-    table, th, td {
-        border: 1px solid black;
-    }
-
-    input.grayInput, textarea.grayInput {
-        color: gray;
-    }
-
-    button.fullRect {
-        width: 100%;
-        height: 100%;
-    }
-</style>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,19 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/signin.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+
 </head>
 <body>
     <div id="cloudService">
-        <h1>Cloud Service</h1>
         <router-view></router-view>
     </div>
 
     <script src="js/vue.js"></script>
     <script src="js/vue-router.js"></script>
     <script src="js/axios.js"></script>
-    <script src="app/LoginComponent.js"></script>
-    <script src="app/OrgListComponent.js"></script>
-    <script src="app/DashboardComponent.js"></script>
+    <script src="js/jQuery.js"></script>
+    <script src="js/poper.js"></script>
+    <script src ="js/bootstrap.js"></script>
+    <script src="app/layout/LoginComponent.js"></script>
+    <script src="app/lists/OrgListComponent.js"></script>
+    <script src="app/lists/VMListComponent.js"></script>
+    <script src="app/lists/UserList.js"></script>
+    <script src="app/layout/DefaultLayout.js"></script>
+    <script src="app/layout/DashboardComponent.js"></script>
+    <script src="app/layout/Users.js"></script>
     <script src="app/app.js"></script>
 
 </body>

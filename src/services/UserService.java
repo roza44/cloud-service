@@ -34,6 +34,10 @@ public class UserService {
 		return null;
 	}
 	
+	public static ArrayList<Korisnik> getUsers() {
+		return users;
+	}
+	
 	
 
 }

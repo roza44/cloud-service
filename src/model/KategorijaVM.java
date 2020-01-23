@@ -11,7 +11,6 @@ public class KategorijaVM {
 	}
 	
 	public KategorijaVM(String ime, int brojJezgara, double ram, int gpuJezgra) {
-		super();
 		this.ime = ime;
 		this.brojJezgara = brojJezgara;
 		this.ram = ram;

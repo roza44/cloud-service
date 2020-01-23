@@ -10,8 +10,10 @@ import java.io.IOException;
 
 import controllers.OrganizacijaController;
 import controllers.UserController;
+import controllers.VMController;
 import services.OrganizacijaService;
 import services.UserService;
+import services.VMService;
 
 public class Main {
 
@@ -22,16 +24,21 @@ public class Main {
 		
 		OrganizacijaService.initialize();
 		UserService.initialize();
+		VMService.initialize();
 
 		
 		// USERS
 		post("/rest/Users/login", UserController.verifyLogin);
 		get("/rest/Users/info", UserController.getInfo);
+		get("/rest/Users/getAll", UserController.getAll);
 		
 		// ORGANIZATIONS
 		get("rest/Organizations", OrganizacijaController.getAll);
 		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
+		
+		//VIRTUAL MACHINES
+		get("rest/VirualMachines/getAll", VMController.getAll);
 
 	}
 

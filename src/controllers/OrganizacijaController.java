@@ -3,7 +3,6 @@ package controllers;
 import com.google.gson.Gson;
 
 import gson_classes.LoginInfo;
-import model.Korisnik;
 import model.Organizacija;
 import services.OrganizacijaService;
 import services.UserService;

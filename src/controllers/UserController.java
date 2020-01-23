@@ -2,11 +2,12 @@ package controllers;
 
 import com.google.gson.Gson;
 
+import gson_classes.EnsureInfo;
 import gson_classes.LoginInfo;
 import model.Korisnik;
 import services.UserService;
-
 import spark.Route;
+import spark.Session;
 
 public class UserController {
 	
@@ -20,19 +21,35 @@ public class UserController {
 			req.session(true).attribute("role", k.getUloga());
 			return "OK";
 		} else {
+			res.status(400);
 			return "Invalid username or password!";
 		}
 	};
 	
 	public static Route getInfo = (req,res) -> {
 		res.type("application/json");
-		String role = req.session(false).attribute("role");
-		return role;
+		
+		Session s = req.session(false);
+		EnsureInfo ei = new EnsureInfo();
+		if(s == null)
+			return g.toJson(ei);
+		if(s.attribute("role") == null)
+			return g.toJson(ei);
+		
+		ei.isLogedIn = true;
+		ei.role = s.attribute("role");
+		return g.toJson(ei);
+		
+	};
+	
+	public static Route getAll = (req, res) -> {
+		res.type("application/json");
+		return g.toJson(UserService.getUsers());
 	};
 	
 	public static Route logout = (req,res) -> {
 		res.type("application/json");
-		req.session(false).removeAttribute("role");
+		req.session(false).invalidate();
 		return "Succssesfull logout!";
 	};
 }
