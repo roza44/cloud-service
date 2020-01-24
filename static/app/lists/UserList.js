@@ -42,7 +42,7 @@ Vue.component("user_list", {
         .then(response => {
             self.user_list = response.data;
         })
-        .error(function(error) {
+        .catch(function(error) {
             alert("Failed to read users");
         });
 

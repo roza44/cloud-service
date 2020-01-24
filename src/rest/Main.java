@@ -34,6 +34,7 @@ public class Main {
 		
 		// ORGANIZATIONS
 		get("rest/Organizations", OrganizacijaController.getAll);
+		get("rest/Organizations/:ime", OrganizacijaController.getOne);
 		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
 		

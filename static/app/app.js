@@ -1,13 +1,18 @@
 const login = {template : '<login></login>'}
 const dashboard = {template : '<dashboard></dashboard>'}
-var users = {template : '<users></users>'}
+const users = {template : '<users></users>'}
+const organizations = {template : '<organizations></organizations>'}
+const openOrganization = {template: '<open_organization></open_organization>'}
 
 const router = new VueRouter({
     mode: 'hash',
     routes: [
       { path: '/', component: login},
       { path: '/dashboard', component: dashboard},
-      { path: '/users', component: users }
+      { path: '/users', component: users },
+      { path: '/organizations', component: organizations},
+      { path: '/openOrg/:ime', component: openOrganization},
+      { path: '/openOrg/', component: openOrganization}
     ]
 });
 

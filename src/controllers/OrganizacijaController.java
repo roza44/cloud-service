@@ -16,6 +16,17 @@ public class OrganizacijaController {
 		return g.toJson(OrganizacijaService.getOrganizacije());
 	};
 	
+	public static Route getOne = (req, res) -> {
+		res.type("application/json");
+		Organizacija org = OrganizacijaService.getOrganizacija(req.params(":ime"));
+		if (org == null) {
+			res.status(404);
+			return "Organization not found";
+		} else {
+			return g.toJson(org);
+		}
+	};
+	
 	public static Route insertOne = (req, res) -> {
 		res.type("application/json");
 		Organizacija org = g.fromJson(req.body(), Organizacija.class);
