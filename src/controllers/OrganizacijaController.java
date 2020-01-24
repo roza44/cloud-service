@@ -1,5 +1,12 @@
 package controllers;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+import javax.servlet.MultipartConfigElement;
+
 import com.google.gson.Gson;
 
 import gson_classes.LoginInfo;
@@ -30,6 +37,7 @@ public class OrganizacijaController {
 	public static Route insertOne = (req, res) -> {
 		res.type("application/json");
 		Organizacija org = g.fromJson(req.body(), Organizacija.class);
+		
 		OrganizacijaService.add(org);
 		
 		return "OK";
@@ -37,10 +45,31 @@ public class OrganizacijaController {
 	
 	public static Route updateOne = (req, res) -> {
 		res.type("application/json");
-		String nameToFind = req.params("ime");
-		Organizacija newObj = g.fromJson(req.body(), Organizacija.class);
-		OrganizacijaService.update(nameToFind, newObj);
 		
+		Organizacija org = g.fromJson(req.body(), Organizacija.class);
+	
+	    boolean ok = OrganizacijaService.update(org);
+		
+		if (!ok) {
+			res.status(404);
+			return "Organization not found!";
+		}
+		return "OK";
+	};
+	
+	public static Route setImage = (req, res) -> {
+		res.type("application/json");
+		String fileName = req.params("fileName");
+		String extension = fileName.split("\\.")[1];
+		String orgName = req.params("ime");
+		
+		byte[] data = req.bodyAsBytes();
+		boolean ok = OrganizacijaService.setImage(orgName, extension, data);
+		
+		if (!ok) {
+			res.status(404);
+			return "Organization not found!";
+		}
 		return "OK";
 	};
 	

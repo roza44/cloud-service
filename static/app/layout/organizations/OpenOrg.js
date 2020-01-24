@@ -4,7 +4,8 @@ Vue.component("open_organization", {
             org : {
                 ime: "",
                 opis: ""
-            }
+            },
+            slikaFile : null
         };
     },
 
@@ -31,11 +32,11 @@ Vue.component("open_organization", {
                             <textarea class="form-control" id="opis" rows="3" v-model="org.opis"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="slika">Slika</label>
-                            <input type="file" class="form-control-file" id="slika">
+                            <label for="slikaPolje">Slika</label>
+                            <input type="file" class="form-control-file" id="slikaPolje" ref="slikaPolje" @change="handleFileChange()">
                         </div>
-                        <button v-if="$route.params.ime" type="submit" class="btn btn-primary" @click="updateOrg()">Izmeni</button>
-                        <button v-else type="submit" class="btn btn-primary" @click="addOrg()">Dodaj</button>
+                        <button v-if="$route.params.ime" type="submit" class="btn btn-primary" @click="editOrg(org.ime)">Izmeni</button>
+                        <button v-else type="submit" class="btn btn-primary" @click="editOrg(null)">Dodaj</button>
                     </form>
                 </div>
             </div>
@@ -43,23 +44,35 @@ Vue.component("open_organization", {
     `,
 
     methods: {
-        addOrg: function() {
-            axios
-            .post("rest/Organizations/", this.org)
-            .then(response => {
-                this.$router.push("/organizations");
-            })
-            .catch(function(error) {alert(error);});
+        handleFileChange: function() {
+            this.slikaFile = this.$refs.slikaPolje.files[0];
         },
-
-        updateOrg: function() {
-            axios
-            .post("rest/Organizations/" + this.org.ime, this.org)
-            .then(response => {
-                this.$router.push("/organizations");
+        editOrg: function(orgName) {
+            self = this;
+            let path = 'rest/Organizations/';
+            if (orgName !== null) {
+                path = path + orgName
+            }
+            axios.post(path, self.org)
+            .then(function(){
+                // Image
+                if (self.slikaFile) {
+                    // Upload image
+                    axios.post( '/rest/setOrgImage/' + self.org.ime + "/" + self.slikaFile.name, self.slikaFile)
+                    .then(function(){
+                        self.slikaFile = null;
+                        self.$router.push("/organizations");
+                    })
+                    .catch(function(){
+                        console.log('Failed to upload pic!');
+                    });
+                } else {
+                    self.$router.push("/organizations");
+                }
             })
             .catch(function(error) {alert(error);});
-        }
+
+        },
     },
     mounted () {
         if (this.$route.params.ime) { // Ako menjamo vec postojecu, ucitaj je

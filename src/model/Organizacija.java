@@ -6,6 +6,7 @@ public class Organizacija {
 	
 	private String ime;
 	private String opis;
+	private String slikaPutanja;
 	private ArrayList<Korisnik> korisnici;
 	private ArrayList<VirtualnaMasina> resursi;
 	
@@ -40,6 +41,15 @@ public class Organizacija {
 	}
 	public void dodajResurs(VirtualnaMasina vm) {
 		this.resursi.add(vm);
+	}
+	public String getSlikaPutanja() {
+		return slikaPutanja;
+	}
+	public String getSlikaIme() {
+		return ime.replaceAll(" ", "_");
+	}
+	public void setSlikaPutanja(String slikaPutanja) {
+		this.slikaPutanja = slikaPutanja;
 	}
 	
 	

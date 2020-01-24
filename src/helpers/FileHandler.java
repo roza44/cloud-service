@@ -1,17 +1,23 @@
 package helpers;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.imageio.ImageIO;
 
 import com.google.gson.Gson;
 
@@ -19,7 +25,7 @@ import model.Organizacija;
 
 public class FileHandler {
 	private static Gson gson = new Gson();
-	private static String dataFolderName = "data";
+	private static String dataFolderName = "static/data";
 	private static String orgLogosFolderName = dataFolderName + File.separator + "orgLogos";
 	
 	private static String orgsFilename = "organizacije.json";
@@ -76,7 +82,17 @@ public class FileHandler {
 		
 	}
 	
-	
+	public static void saveImage(String name, String extension, byte[] data) {
+		checkDir();
+		ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		try {
+			BufferedImage image = ImageIO.read(bis);
+			ImageIO.write(image, extension, newFile(name + "." + extension));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public static void save(ArrayList<Organizacija> orgs) {
 		checkDir();

@@ -8,6 +8,9 @@ Vue.component("org_list", {
 
     template: `
     <div>
+        <br> <br> <br>
+        <br> <br> <br>
+        <br> <br> <br>
         <h2>Organizacije</h2>
         Kliknite na red u tabeli da izmenite polja te organizacije.
         <table class="table table-striped table-hover">
@@ -20,7 +23,7 @@ Vue.component("org_list", {
         </thead>
         <tbody v-for="org in organizations">
             <tr @click="editOrg(org)">
-                <td>Uskoro</td>
+                <td><img :src="'data/' + org.slikaPutanja" height="64"></td>
                 <td>{{org.ime}}</td>
                 <td>{{org.opis}}</td>
             </tr>

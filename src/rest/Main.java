@@ -37,6 +37,7 @@ public class Main {
 		get("rest/Organizations/:ime", OrganizacijaController.getOne);
 		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
+		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);
 		
 		//VIRTUAL MACHINES
 		get("rest/VirualMachines/getAll", VMController.getAll);
