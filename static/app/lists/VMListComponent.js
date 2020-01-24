@@ -8,11 +8,10 @@ Vue.component("vm_list", {
 
     template: `
     <div class="table-responsive">
-    <h2>Virtualne masine</h2>
+    <h2>Virtuelne masine</h2>
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th></th>
           <th>Ime</th>
           <th>Kategorija</th>
           <th>Broj jezgara</th>
@@ -21,9 +20,7 @@ Vue.component("vm_list", {
       </thead>
       <tbody v-for="v in vm_list">
         <tr>
-            <td></td>
             <td>{{v.ime}}</td>
-            <td>{{v.kategorija.ime}}</td>
             <td>{{v.kategorija.ime}}</td>
             <td>{{v.kategorija.brojJezgara}}</td>
             <td>{{v.kategorija.gpuJezgra}}</td>
