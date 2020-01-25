@@ -27,7 +27,7 @@ Vue.component("user_modal", {
                 <form>
                     <div v-if="type==='add'" class="form-group">
                         <label for="formGroupExampleInput1">Email</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput1" v-model="password">
+                        <input type="text" class="form-control" id="formGroupExampleInput1" v-model="email">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Lozinka</label>
@@ -79,7 +79,13 @@ Vue.component("user_modal", {
             if(!this.validate() || this.email === "")
                 alert("Nevalidan unos! Sva polja moraju biti popunjena!");
             else {
-                alert("U ovom trenutku je potrebno poslati axios zahtev (nije jos implementirano)");
+                var self = this;
+                axios
+                .post("rest/Users/addUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname, "lozinka" : this.password})
+                .then(response => {
+                    this.$emit("addUser", response.data);
+                })
+                .catch(function(error) { alert("Korisnik sa unetim email-om vec postoji!")});
                 $("#exampleModal").modal('hide');
             }
         },
@@ -88,7 +94,12 @@ Vue.component("user_modal", {
             if(!this.validate() || this.email === "")
                 alert("Nevalidna izmena! Sva polja moraju biti popunjena!");
             else {
-                alert("U ovom trenutku je potrebno poslati axios zahtev (nije jos implementirano)");
+                var self = this;
+                axios
+                .post("rest/Users/changeUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname, "lozinka" : this.password})
+                .then(response => {
+                    this.$emit("changeUser", response.data);
+                });
                 $("#exampleModal").modal('hide');
             }
 

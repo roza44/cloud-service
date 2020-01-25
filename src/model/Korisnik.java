@@ -24,6 +24,19 @@ public class Korisnik {
 		this.uloga = uloga;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {   
+        if (obj == this) { 
+            return true; 
+        }  
+        if (!(obj instanceof Korisnik)) { 
+            return false; 
+        }  
+        Korisnik k = (Korisnik) obj; 
+            
+        return this.email.equals(k.email);
+	}
+	
 	public String getEmail() {
 		return email;
 	}

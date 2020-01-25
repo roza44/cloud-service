@@ -32,6 +32,8 @@ public class Main {
 		get("/rest/Users/info", UserController.getInfo);
 		get("/rest/Users/getAll", UserController.getAll);
 		get("/rest/Users/logout", UserController.logout);
+		post("/rest/Users/addUser", UserController.addUser);
+		post("/rest/Users/changeUser", UserController.changeUser);
 		
 		// ORGANIZATIONS
 		get("rest/Organizations", OrganizacijaController.getAll);

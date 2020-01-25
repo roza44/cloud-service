@@ -52,4 +52,24 @@ public class UserController {
 		req.session(false).invalidate();
 		return g.toJson("Succssesfull logout!");
 	};
+	
+	public static Route addUser = (req, res) -> {
+		res.type("application/json");
+		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		if(UserService.containsUser(k)) {
+			res.status(400);
+			return g.toJson("Korisnik sa unetim email-om vec postoji!");
+		}
+		
+		res.status(200);
+		UserService.addUser(k);
+		return g.toJson(k);
+	};
+	
+	public static Route changeUser = (req, res) -> {
+		res.type("application/json");
+		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		Korisnik uk = UserService.updateUser(k.getEmail(), k); // updateUser vraca updateovanog usera
+		return g.toJson(uk);
+	};
 }

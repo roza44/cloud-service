@@ -16,6 +16,14 @@ public class UserService {
 		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", null, "superadmin"));
 	}
 	
+	public static void addUser(Korisnik k) {
+		users.add(k);
+	}
+	
+	public static boolean containsUser(Korisnik k) {
+		return users.contains(k);
+	}
+	
 	public static boolean checkLogin(String username, String password) {
 		for(Korisnik u : users)
 			if(u.getEmail().equals(username) && u.getLozinka().equals(password))
@@ -38,6 +46,12 @@ public class UserService {
 		return users;
 	}
 	
-	
+	public static Korisnik updateUser(String email, Korisnik newUser) {
+		Korisnik k = getUser(email);
+		k.setIme(newUser.getIme());
+		k.setPrezime(newUser.getPrezime());
+		k.setLozinka(newUser.getLozinka());
+		return k;
+	}
 
 }
