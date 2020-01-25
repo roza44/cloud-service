@@ -31,7 +31,8 @@ Vue.component("user_list", {
       <button type="button" class="btn btn-outline-primary btn-lg btn-block" v-on:click="showAdd">
       Dodaj korisnika
       </button>
-      <user_modal @changeUser="changeUser($event)" @addUser="addUser($event)" ref="modalRef" ></user_modal>
+      <user_modal ref="modalRef" @changeUser="changeUser($event)" @addUser="addUser($event)" @deleteUser="deleteUser($event)">
+      </user_modal>
     </div>
     
     `,
@@ -51,8 +52,18 @@ Vue.component("user_list", {
       
       changeUser : function(user) {
         for(i=0; i < this.user_list.length; i++)
-          if(this.user_list[i].email === user.email)
+          if(this.user_list[i].email === user.email) {
               this.user_list.splice(i, 1, user);
+              break;
+          }
+      },
+      
+      deleteUser : function(user) {
+        for(i=0; i < this.user_list.length; i++)
+          if(this.user_list[i].email === user.email) {
+              this.user_list.splice(i, 1);
+              break;
+          }
       }
     },
 

@@ -53,5 +53,17 @@ public class UserService {
 		k.setLozinka(newUser.getLozinka());
 		return k;
 	}
+	
+	public static Korisnik deleteUser(Korisnik delK) {
+		Korisnik retVal = new Korisnik();
+		for(Korisnik k : users)
+			if(k.equals(delK)) {
+				retVal = k;
+				users.remove(k);
+				break;
+			}
+		
+		return retVal;
+	}
 
 }

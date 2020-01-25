@@ -7,9 +7,9 @@ Vue.component("vm_list", {
     },
 
     template: `
-    <div class="table-responsive">
+    <div class="container-fluid">
     <h2>Virtuelne masine</h2>
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th>Ime</th>

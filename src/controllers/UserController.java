@@ -72,4 +72,10 @@ public class UserController {
 		Korisnik uk = UserService.updateUser(k.getEmail(), k); // updateUser vraca updateovanog usera
 		return g.toJson(uk);
 	};
+	
+	public static Route deleteUser = (req, res) -> {
+		res.type("application/json");
+		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		return g.toJson(UserService.deleteUser(k));
+	};
 }

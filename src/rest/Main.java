@@ -34,6 +34,7 @@ public class Main {
 		get("/rest/Users/logout", UserController.logout);
 		post("/rest/Users/addUser", UserController.addUser);
 		post("/rest/Users/changeUser", UserController.changeUser);
+		post("/rest/Users/deleteUser", UserController.deleteUser);
 		
 		// ORGANIZATIONS
 		get("rest/Organizations", OrganizacijaController.getAll);

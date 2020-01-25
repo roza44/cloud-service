@@ -18,7 +18,7 @@ Vue.component("user_modal", {
             <div class="modal-content">
             <div class="modal-header">
                 <h5 v-if="type==='add'" class="modal-title" id="exampleModalLabel">Dodavanje korisnika</h5>
-                <h5 v-if="type==='change'" class="modal-title" id="exampleModalLabel">Izmena korisnika</h5>
+                <h5 v-if="type==='change'" class="modal-title" id="exampleModalLabel">Izmena korisnika: {{email}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -46,6 +46,9 @@ Vue.component("user_modal", {
             <div class="modal-footer">
                 <button v-if="type==='add'" v-on:click="add" type="button" class="btn btn-primary">Dodaj</button>
                 <button v-if="type==='change'" v-on:click="change" type="button" class="btn btn-primary">Izmeni</button>
+                <button v-if="type==='change'" v-on:click="deleteUser" type="button" class="btn btn-primary" style="background-color:coral">
+                    Izbrisi korisnika
+                </button>
             </div>
             </div>
         </div>
@@ -103,6 +106,19 @@ Vue.component("user_modal", {
                 $("#exampleModal").modal('hide');
             }
 
+        },
+
+        deleteUser : function() {
+            var self = this;
+            axios
+            .post("rest/Users/deleteUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname, "lozinka" : this.password})
+            .then(response => {
+                this.$emit("deleteUser", response.data);
+            })
+            .catch(function(error) {
+                alert("Neuspesno brisanje korisnika!");
+            });
+            $("#exampleModal").modal('hide');
         },
 
         validate : function() {
