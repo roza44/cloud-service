@@ -7,7 +7,7 @@ Vue.component("user_list", {
     },
 
     template: `
-    <div>
+    <div class="container-fluid">
       <h2>Korisnici</h2>
       Kliknite na red u tabeli za izmenu podataka o korisniku
       <table id="userTable" class="table table-striped table-hover">
@@ -28,11 +28,9 @@ Vue.component("user_list", {
           </tr>
         </tbody>
       </table>
-      <div class="row">
-        <button type="button" class="btn btn-outline-primary btn-lg btn-block" v-on:click="showAdd">
-        Dodaj korisnika
-        </button>
-      </div>
+      <button type="button" class="btn btn-outline-primary btn-lg btn-block" v-on:click="showAdd">
+      Dodaj korisnika
+      </button>
       <user_modal @changeUser="changeUser($event)" @addUser="addUser($event)" ref="modalRef" ></user_modal>
     </div>
     
