@@ -44,8 +44,8 @@ Vue.component("user_modal", {
                 </form>
             </div>
             <div class="modal-footer">
-                <button v-if="type==='add'" type="button" class="btn btn-primary">Dodaj</button>
-                <button v-if="type==='change'" type="button" class="btn btn-primary">Izmeni</button>
+                <button v-if="type==='add'" v-on:click="add" type="button" class="btn btn-primary">Dodaj</button>
+                <button v-if="type==='change'" v-on:click="change" type="button" class="btn btn-primary">Izmeni</button>
             </div>
             </div>
         </div>
@@ -73,6 +73,32 @@ Vue.component("user_modal", {
             this.secondname = secondname;
             this.password = password;
             this.type = type;
+        },
+
+        add : function() {
+            if(!this.validate() || this.email === "")
+                alert("Nevalidan unos! Sva polja moraju biti popunjena!");
+            else {
+                alert("U ovom trenutku je potrebno poslati axios zahtev (nije jos implementirano)");
+                $("#exampleModal").modal('hide');
+            }
+        },
+
+        change : function() {
+            if(!this.validate() || this.email === "")
+                alert("Nevalidna izmena! Sva polja moraju biti popunjena!");
+            else {
+                alert("U ovom trenutku je potrebno poslati axios zahtev (nije jos implementirano)");
+                $("#exampleModal").modal('hide');
+            }
+
+        },
+
+        validate : function() {
+            if(this.name === "") return false;
+            if(this.secondname === "") return false;
+            if(this.password === "") return false;
+            return true;
         }
 
     },
