@@ -14,7 +14,7 @@ Vue.component("default_layout", {
             
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Odjava</a>
+                <a v-on:click="logout" class="nav-link">Odjava</a>
                 </li>
             </ul>
         </nav>
@@ -71,7 +71,7 @@ Vue.component("default_layout", {
             .then(response  => {
                 this.$router.push("/");
             })
-            .cathc(function(error){alert(error);})
+            .catch(function(error){alert(error);})
         }
 
     }

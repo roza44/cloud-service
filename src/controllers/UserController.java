@@ -50,6 +50,6 @@ public class UserController {
 	public static Route logout = (req,res) -> {
 		res.type("application/json");
 		req.session(false).invalidate();
-		return "Succssesfull logout!";
+		return g.toJson("Succssesfull logout!");
 	};
 }

@@ -7,9 +7,10 @@ Vue.component("user_list", {
     },
 
     template: `
-    <div class="table-responsive">
+    <div>
     <h2>Korisnici</h2>
-    <table class="table table-striped table-sm">
+    Kliknite na red u tabeli za izmenu podataka o korisniku
+    <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th></th>
@@ -20,7 +21,7 @@ Vue.component("user_list", {
         </tr>
       </thead>
       <tbody v-for="u in user_list">
-        <tr>
+        <tr v-on:click="changeUser(u)">
             <td></td>
             <td>{{u.email}}</td>
             <td>{{u.lozinka}}</td>
@@ -29,9 +30,25 @@ Vue.component("user_list", {
         </tr>
       </tbody>
     </table>
+    <div class="row">
+      <button type="button" class="btn btn-outline-primary btn-lg btn-block" v-on:click="addUser">
+      Dodaj korisnika
+      </button>
+    </div>
+    <user_modal ref="modalRef"></user_modal>
   </div>
     
     `,
+
+    methods: {
+      addUser : function() {
+        this.$refs.modalRef.show(null);
+      },
+
+      changeUser : function(model) {
+        this.$refs.modalRef.show(model);
+      }
+    },
 
     mounted () {
 

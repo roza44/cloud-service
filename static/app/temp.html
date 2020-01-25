@@ -1,29 +1,16 @@
-<div class="container">
-    <div v-if="$router.params.ime" class="row">
-        Izmena organizacije
-    </div>
 
-    <div v-else class="row">
-        Dodavanje nove organizacije
-    </div>
 
-    <div class="row">
-        <form>
-            <div class="form-group">
-                <label for="ime">Ime</label>
-                <input v-if="$router.params.ime" type="text" class="form-control" id="ime" readonly>
-                <input v-else type="text" class="form-control" id="ime">
-            </div>
-            <div class="form-group">
-                <label for="opis">Opis</label>
-                <textarea class="form-control" id="opis" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="slika">Slika</label>
-                <input type="file" class="form-control-file" id="slika">
-            </div>
-            <button v-if="$router.params.ime" type="submit" class="btn btn-primary">Dodaj</button>
-            <button v-else type="submit" class="btn btn-primary">Izmeni</button>
-        </form>
+<form>
+    <div class="form-group">
+      <label for="formGroupExampleInput">Ime</label>
+      <input type="text" class="form-control" id="formGroupExampleInput" v-model="name">
     </div>
-</div>
+    <div class="form-group">
+      <label for="formGroupExampleInput2">Prezime</label>
+      <input type="text" class="form-control" id="formGroupExampleInput2" v-model="secondname">
+    </div>
+    <div class="form-group">
+        <label for="formGroupExampleInput2">Lozinka</label>
+        <input type="text" class="form-control" id="formGroupExampleInput2" v-model="password">
+      </div>
+  </form>
