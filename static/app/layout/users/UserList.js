@@ -54,7 +54,7 @@ Vue.component("user_list", {
       changeUser : function(user) {
         for(i=0; i < this.user_list.length; i++)
           if(this.user_list[i].email === user.email)
-              this.user_list[i] = user;
+              this.user_list.splice(i, 1, user);
       }
     },
 
