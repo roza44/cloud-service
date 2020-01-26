@@ -55,6 +55,10 @@ public class UserService {
 		return users;
 	}
 	
+	public static ArrayList<Korisnik> accessibleUsers(String username) {
+		return getUser(username).getOrganizacija().getKorisnici();
+	}
+	
 	public static Korisnik updateUser(String email, Korisnik newUser) {
 		Korisnik k = getUser(email);
 		k.setIme(newUser.getIme());

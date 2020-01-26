@@ -8,6 +8,7 @@ Vue.component("user_modal", {
             name : "",
             secondname : "",
             password : "",
+            role : ""
         }
 
     },
@@ -41,6 +42,13 @@ Vue.component("user_modal", {
                         <label for="formGroupExampleInput4">Prezime</label>
                         <input type="text" class="form-control" id="formGroupExampleInput4" v-model="secondname">
                     </div>
+                    <div class="form-group">
+                        <label for="roleSel">Uloga</label>
+                        <select ref="select" id="roleSel" class="form-control">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -64,27 +72,32 @@ Vue.component("user_modal", {
 
         fillContent : function(model) {
             if(model == null)
-                this.setData("", "", "", "", 'add');
+                this.setData("", "", "", "", null, 'add');
             else
-                this.setData(model.email, model.ime, model.prezime, model.lozinka, 'change');
+            {
+                this.setData(model.email, model.ime, model.prezime, model.lozinka, model.uloga, 'change');
+            }
         },
 
-        setData  : function(email, name, secondname, password, type)
+        setData  : function(email, name, secondname, password, selRole, type)
         {
             this.email = email;
             this.name = name;
             this.secondname = secondname;
             this.password = password;
+            this.$refs.select.selectedIndex = (selRole === "admin")? 1:0;
             this.type = type;
         },
 
         add : function() {
+
             if(!this.validate() || this.email === "")
                 alert("Nevalidan unos! Sva polja moraju biti popunjena!");
             else {
                 var self = this;
                 axios
-                .post("rest/Users/addUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname, "lozinka" : this.password})
+                .post("rest/Users/addUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname,
+                                             "lozinka" : this.password, "uloga" : this.$refs.select.value})
                 .then(response => {
                     this.$emit("addUser", response.data);
                 })
@@ -129,6 +142,10 @@ Vue.component("user_modal", {
         }
 
     },
+
+    mounted () {
+        this.role = localStorage.getItem('role');
+    }
 
 
 });
