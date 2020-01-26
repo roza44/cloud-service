@@ -9,8 +9,7 @@ public class Korisnik {
 	private String ime;
 	private String prezime;
 	
-	@Expose(serialize = false)
-	private Organizacija organizacija;
+	private transient Organizacija organizacija;
 	
 	private String uloga;
 	// admin, superadmin i user

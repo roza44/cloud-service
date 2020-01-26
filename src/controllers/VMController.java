@@ -11,7 +11,9 @@ public class VMController {
 	
 	public static Route getAll = (req, res) -> {
 		res.type("application/json");
-		return g.toJson(VMService.getVirtualMachines());
+		
+		String ret = g.toJson(VMService.getVirtualMachines()); 
+		return ret;
 	};
 	
 

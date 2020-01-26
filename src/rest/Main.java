@@ -57,10 +57,10 @@ public class Main {
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
 		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);
 		
-		//VIRTUAL MACHINES
+		// VIRTUAL MACHINES
 		get("rest/VirualMachines/getAll", VMController.getAll);
 		
-		//CATEGORIES
+		// CATEGORIES
 		get("/rest/Categories/getAll", CatController.getAll);
 		post("/rest/Categories/addCat", CatController.addCat);
 		post("/rest/Categories/changeCat", CatController.changeCat);

@@ -6,8 +6,7 @@ public class Disk {
 	private String ime, tip;
 	private double kapacitet;
 	
-	@Expose(serialize = false)
-	private VirtualnaMasina vm;
+	private transient VirtualnaMasina vm;
 	
 	public Disk(String ime, String tip, double kapacitet, VirtualnaMasina vm) {
 		super();

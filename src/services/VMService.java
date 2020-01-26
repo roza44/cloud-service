@@ -21,8 +21,7 @@ public class VMService {
 		VirtualnaMasina vm2 = new VirtualnaMasina("VM2", new KategorijaVM("Kat2", 8, 20, 128));
 		vm2.addDisk(new Disk("Disk2", "hdd", 700.45, null));
 		virtualMachines.add(vm2);
-		
-		helpers.FileHandler.saveVMs(virtualMachines);
+	
 		///
 	}
 	
@@ -41,6 +40,7 @@ public class VMService {
 			}
 		}
 		
+		helpers.FileHandler.saveVMs(virtualMachines);
 	}
 	
 	public static ArrayList<VirtualnaMasina> getVirtualMachines() {
