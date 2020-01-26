@@ -16,6 +16,7 @@ Vue.component("vm_list", {
             <th>Ime</th>
             <th>Kategorija</th>
             <th>Broj jezgara</th>
+            <th>RAM</th>
             <th>Broj GPU jezgara</th>
           </tr>
         </thead>
@@ -24,6 +25,7 @@ Vue.component("vm_list", {
               <td>{{v.ime}}</td>
               <td>{{v.kategorija.ime}}</td>
               <td>{{v.kategorija.brojJezgara}}</td>
+              <td>{{v.kategorija.ram}}</td>
               <td>{{v.kategorija.gpuJezgra}}</td>
           </tr>
         </tbody>
