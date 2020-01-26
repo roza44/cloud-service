@@ -55,5 +55,14 @@ public class VMService {
 		}
 		return null;
 	}
+	
+	public static boolean catInUser(KategorijaVM kat) {
+		
+		for(VirtualnaMasina vm : virtualMachines)
+			if(vm.getKategorija().equals(kat))
+				return true;
+		
+		return false;
+	}
 
 }
