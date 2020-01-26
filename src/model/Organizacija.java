@@ -2,11 +2,14 @@ package model;
 
 import java.util.ArrayList;
 
+import com.google.gson.annotations.Expose;
+
 public class Organizacija {
 	
 	private String ime;
 	private String opis;
 	private String slikaPutanja;
+	
 	private ArrayList<Korisnik> korisnici;
 	private ArrayList<VirtualnaMasina> resursi;
 	

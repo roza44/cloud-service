@@ -8,17 +8,25 @@ public class CatService {
 	
 	private static ArrayList<KategorijaVM> categories;
 	
-	public static void initialize() {
+	private static void simulate() {
+		// Simulate
 		categories = new ArrayList<KategorijaVM>();
 		
-		KategorijaVM kvm1 = new KategorijaVM("Linux", 2, 2500, 10);
-		KategorijaVM kvm2 = new KategorijaVM("Windows", 4, 3000, 20);
-		
-		categories.add(kvm1);
-		categories.add(kvm2);
+		categories.add(new KategorijaVM("Kat1", 4, 8.5, 32));
+		categories.add(new KategorijaVM("Kat2", 8, 20, 128));
+		helpers.FileHandler.saveCats(categories);
+		///
 	}
 	
-	public static ArrayList<KategorijaVM> getCategories() {
+	public static void initialize() {
+		
+		
+		categories = helpers.FileHandler.loadCats();
+		
+	}
+	
+	
+	public static ArrayList<KategorijaVM> getAll() {
 		return categories;
 	}
 	

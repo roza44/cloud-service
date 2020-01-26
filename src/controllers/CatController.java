@@ -14,7 +14,7 @@ public class CatController {
 	
 	public static Route getAll = (req, res) -> {
 		res.type("application/json");
-		return g.toJson(CatService.getCategories());
+		return g.toJson(CatService.getAll());
 	};
 	
 	public static Route addCat = (req, res) -> {

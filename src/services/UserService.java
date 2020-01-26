@@ -9,11 +9,19 @@ public class UserService {
 	
 	private static ArrayList<Korisnik> users;
 	
-	public static void initialize() {
+	private static void simulate() {
+		// Simulate
 		users = new ArrayList<Korisnik>();
 		
-		users.add(new Korisnik("roza44", "pass", "Joca", "Boca", OrganizacijaService.getOrganizacija("Lambda kod"), "admin"));
+		users.add(new Korisnik("roza44", "pass", "Joca", "Boca", null, "admin"));
 		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", null, "superadmin"));
+		
+		helpers.FileHandler.saveUsers(users);
+		///
+	}
+	
+	public static void initialize() {
+		users = helpers.FileHandler.loadUsers();
 	}
 	
 	public static void addUser(Korisnik k) {

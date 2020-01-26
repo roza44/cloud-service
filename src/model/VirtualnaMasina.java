@@ -6,25 +6,41 @@ public class VirtualnaMasina {
 	
 	private String ime;
 	private KategorijaVM kategorija;
+	
 	private ArrayList<Disk> diskovi;
+	private ArrayList<VMActivity> aktivnosti;
 	
 	public VirtualnaMasina(String ime, KategorijaVM kategorija) {
 		this.ime = ime;
 		this.kategorija = kategorija;
 		this.diskovi = new ArrayList<Disk>();
+		this.aktivnosti = new ArrayList<VMActivity>();
 	}
+
+	public void addDisk(Disk d) {
+		diskovi.add(d);
+	}
+	
+	public void addActivity(boolean turnedOn) {
+		this.aktivnosti.add(new VMActivity(turnedOn));
+	}
+	
 	public String getIme() {
 		return ime;
 	}
+	
 	public void setIme(String ime) {
 		this.ime = ime;
 	}
+	
 	public KategorijaVM getKategorija() {
 		return kategorija;
 	}
+	
 	public void setKategorija(KategorijaVM kategorija) {
 		this.kategorija = kategorija;
 	}
+	
 	public ArrayList<Disk> getDiskovi() {
 		return diskovi;
 	}

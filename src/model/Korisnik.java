@@ -1,11 +1,15 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 public class Korisnik {
 	
 	private String email;
 	private String lozinka;
 	private String ime;
 	private String prezime;
+	
+	@Expose(serialize = false)
 	private Organizacija organizacija;
 	
 	private String uloga;

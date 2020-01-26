@@ -21,14 +21,21 @@ import javax.imageio.ImageIO;
 
 import com.google.gson.Gson;
 
+import model.Disk;
+import model.KategorijaVM;
+import model.Korisnik;
 import model.Organizacija;
+import model.VirtualnaMasina;
 
 public class FileHandler {
 	private static Gson gson = new Gson();
 	private static String dataFolderName = "static/data";
-	private static String orgLogosFolderName = dataFolderName + File.separator + "orgLogos";
 	
+	private static String disksFilename = "disks.json";
 	private static String orgsFilename = "organizacije.json";
+	private static String catsFilename = "cats.json";
+	private static String vmsFilename = "vms.json";
+	private static String usersFilename = "users.json";
 	
 	private static void checkDir(){
 		File folder = new File(dataFolderName);
@@ -94,7 +101,7 @@ public class FileHandler {
 		}
 	}
 	
-	public static void save(ArrayList<Organizacija> orgs) {
+	public static void saveOrgs(ArrayList<Organizacija> orgs) {
 		checkDir();
 		String jsonStr = gson.toJson(orgs);
 		
@@ -111,9 +118,101 @@ public class FileHandler {
 			return new ArrayList<Organizacija>();
 		}
 		
-		Organizacija[] orgArray = gson.fromJson(jsonStr, Organizacija[].class);
+		Organizacija[] _array = gson.fromJson(jsonStr, Organizacija[].class);
 		ArrayList<Organizacija> ret = new ArrayList<Organizacija>();
-		Collections.addAll(ret, orgArray);
+		Collections.addAll(ret, _array);
+		return ret;
+	}
+	
+	public static void saveDisks(ArrayList<Disk> disks) {
+		checkDir();
+		String jsonStr = gson.toJson(disks);
+		
+		File f = newFile(disksFilename);
+		writeString(f, jsonStr);
+	}
+	
+	public static ArrayList<Disk> loadDisks() {
+		checkDir();
+		String jsonStr;
+		try {
+			jsonStr = readString(newFile(disksFilename));
+		} catch (FileNotFoundException e) {
+			return new ArrayList<Disk>();
+		}
+		
+		Disk[] _array = gson.fromJson(jsonStr, Disk[].class);
+		ArrayList<Disk> ret = new ArrayList<Disk>();
+		Collections.addAll(ret, _array);
+		return ret;
+	}
+	
+	public static void saveCats(ArrayList<KategorijaVM> cats) {
+		checkDir();
+		String jsonStr = gson.toJson(cats);
+		
+		File f = newFile(catsFilename);
+		writeString(f, jsonStr);
+	}
+	
+	public static ArrayList<KategorijaVM> loadCats() {
+		checkDir();
+		String jsonStr;
+		try {
+			jsonStr = readString(newFile(catsFilename));
+		} catch (FileNotFoundException e) {
+			return new ArrayList<KategorijaVM>();
+		}
+		
+		KategorijaVM[] _array = gson.fromJson(jsonStr, KategorijaVM[].class);
+		ArrayList<KategorijaVM> ret = new ArrayList<KategorijaVM>();
+		Collections.addAll(ret, _array);
+		return ret;
+	}
+	
+	public static void saveVMs(ArrayList<VirtualnaMasina> vms) {
+		checkDir();
+		String jsonStr = gson.toJson(vms);
+		
+		File f = newFile(vmsFilename);
+		writeString(f, jsonStr);
+	}
+	
+	public static ArrayList<VirtualnaMasina> loadVMs() {
+		checkDir();
+		String jsonStr;
+		try {
+			jsonStr = readString(newFile(vmsFilename));
+		} catch (FileNotFoundException e) {
+			return new ArrayList<VirtualnaMasina>();
+		}
+		
+		VirtualnaMasina[] _array = gson.fromJson(jsonStr, VirtualnaMasina[].class);
+		ArrayList<VirtualnaMasina> ret = new ArrayList<VirtualnaMasina>();
+		Collections.addAll(ret, _array);
+		return ret;
+	}
+	
+	public static void saveUsers(ArrayList<Korisnik> users) {
+		checkDir();
+		String jsonStr = gson.toJson(users);
+		
+		File f = newFile(usersFilename);
+		writeString(f, jsonStr);
+	}
+	
+	public static ArrayList<Korisnik> loadUsers() {
+		checkDir();
+		String jsonStr;
+		try {
+			jsonStr = readString(newFile(usersFilename));
+		} catch (FileNotFoundException e) {
+			return new ArrayList<Korisnik>();
+		}
+		
+		Korisnik[] _array = gson.fromJson(jsonStr, Korisnik[].class);
+		ArrayList<Korisnik> ret = new ArrayList<Korisnik>();
+		Collections.addAll(ret, _array);
 		return ret;
 	}
 }

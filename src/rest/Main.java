@@ -13,22 +13,33 @@ import controllers.OrganizacijaController;
 import controllers.UserController;
 import controllers.VMController;
 import services.CatService;
+import services.DiskService;
 import services.OrganizacijaService;
 import services.UserService;
 import services.VMService;
 
 public class Main {
 
+	static void initDatabase() {
+		// Load disks
+		DiskService.initialize();
+		// Load categories
+		CatService.initialize();
+		// Load VMs and connect references to categories and disks
+		VMService.initialize();
+		// Load users
+		UserService.initialize();
+		// Load organizations and connect refs to users
+		OrganizacijaService.initialize();
+	}
+	
 	public static void main(String[] args) throws IOException {
 		port(8080);
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
-		OrganizacijaService.initialize();
-		UserService.initialize();
-		VMService.initialize();
-		CatService.initialize();
-
+		// Load all data and initialize
+		initDatabase();
 		
 		// USERS
 		post("/rest/Users/login", UserController.verifyLogin);
