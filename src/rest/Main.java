@@ -8,9 +8,11 @@ import static spark.Spark.staticFiles;
 import java.io.File;
 import java.io.IOException;
 
+import controllers.CatController;
 import controllers.OrganizacijaController;
 import controllers.UserController;
 import controllers.VMController;
+import services.CatService;
 import services.OrganizacijaService;
 import services.UserService;
 import services.VMService;
@@ -25,6 +27,7 @@ public class Main {
 		OrganizacijaService.initialize();
 		UserService.initialize();
 		VMService.initialize();
+		CatService.initialize();
 
 		
 		// USERS
@@ -45,6 +48,12 @@ public class Main {
 		
 		//VIRTUAL MACHINES
 		get("rest/VirualMachines/getAll", VMController.getAll);
+		
+		//CATEGORIES
+		get("/rest/Categories/getAll", CatController.getAll);
+		post("/rest/Categories/addCat", CatController.addCat);
+		post("/rest/Categories/changeCat", CatController.changeCat);
+		post("/rest/Categories/deleteCat", CatController.deleteCat);
 
 	}
 

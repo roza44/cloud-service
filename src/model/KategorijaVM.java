@@ -16,6 +16,20 @@ public class KategorijaVM {
 		this.ram = ram;
 		this.gpuJezgra = gpuJezgra;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {   
+        if (obj == this) { 
+            return true; 
+        }  
+        if (!(obj instanceof KategorijaVM)) { 
+            return false; 
+        }  
+        KategorijaVM k = (KategorijaVM) obj; 
+            
+        return this.ime.equals(k.ime);
+	}
+	
 	public String getIme() {
 		return ime;
 	}
