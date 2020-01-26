@@ -6,7 +6,7 @@ public class Disk {
 	private String ime, tip;
 	private double kapacitet;
 	
-	private transient VirtualnaMasina vm;
+	private VirtualnaMasina vm;
 	
 	public Disk(String ime, String tip, double kapacitet, VirtualnaMasina vm) {
 		super();

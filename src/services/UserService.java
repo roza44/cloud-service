@@ -13,14 +13,15 @@ public class UserService {
 		// Simulate
 		users = new ArrayList<Korisnik>();
 		
-		users.add(new Korisnik("roza44", "pass", "Joca", "Boca", null, "admin"));
-		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", null, "superadmin"));
+		users.add(new Korisnik("roza44", "pass", "Joca", "Boca", new Organizacija("Org1", "opis1"), "admin"));
+		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", new Organizacija("Org2", "opis2"), "superadmin"));
 		
 		helpers.FileHandler.saveUsers(users);
 		///
 	}
 	
 	public static void initialize() {
+		//simulate();
 		users = helpers.FileHandler.loadUsers();
 	}
 	

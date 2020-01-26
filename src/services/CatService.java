@@ -19,7 +19,7 @@ public class CatService {
 	}
 	
 	public static void initialize() {
-		
+		//simulate();
 		
 		categories = helpers.FileHandler.loadCats();
 		

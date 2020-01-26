@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.Disk;
 import model.KategorijaVM;
+import model.Organizacija;
 import model.VirtualnaMasina;
 
 public class VMService {
@@ -15,27 +16,34 @@ public class VMService {
 		virtualMachines = new ArrayList<VirtualnaMasina>();
 
 		VirtualnaMasina vm1 = new VirtualnaMasina("VM1", new KategorijaVM("Kat1", 4, 8.5, 32));
-		vm1.addDisk(new Disk("Disk1", "ssd", 1.2, null));
+		vm1.setOrganizacija(new Organizacija("Org1", "Opis1"));
 		virtualMachines.add(vm1);
 		
+		
 		VirtualnaMasina vm2 = new VirtualnaMasina("VM2", new KategorijaVM("Kat2", 8, 20, 128));
-		vm2.addDisk(new Disk("Disk2", "hdd", 700.45, null));
+		vm2.setOrganizacija(new Organizacija("Org2", "Opis1"));
 		virtualMachines.add(vm2);
+		
+		helpers.FileHandler.saveVMs(virtualMachines);
 		///
 	}
 	
 	public static void initialize()
 	{
+		//simulate();
 		virtualMachines = helpers.FileHandler.loadVMs();
+		
+		ArrayList<Disk> allDisks = DiskService.getDisks();
 		
 		for (VirtualnaMasina vm : virtualMachines) {
 			// Set refs to before loaded real objects
 			vm.setKategorija(CatService.getCat(vm.getKategorija().getIme()));
 			
-			ArrayList<Disk> vmDisks = vm.getDiskovi();
-			for (int i=0; i < vmDisks.size(); i++) {
-				vmDisks.set(i, DiskService.getDisk(vmDisks.get(i).getIme()));
-				vmDisks.get(i).setVm(vm);
+			for (Disk d : allDisks) {
+				if (d.getVm().getIme().equals(vm.getIme())) {					
+					vm.addDisk(d);
+					d.setVm(vm);
+				}
 			}
 		}
 		

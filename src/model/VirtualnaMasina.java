@@ -6,15 +6,27 @@ public class VirtualnaMasina {
 	
 	private String ime;
 	private KategorijaVM kategorija;
+	private Organizacija organizacija;
 	
-	private ArrayList<Disk> diskovi;
+	public Organizacija getOrganizacija() {
+		return organizacija;
+	}
+
+	public void setOrganizacija(Organizacija organizacija) {
+		this.organizacija = organizacija;
+	}
+	private transient ArrayList<Disk> diskovi;
 	private ArrayList<VMActivity> aktivnosti;
 	
-	public VirtualnaMasina(String ime, KategorijaVM kategorija) {
-		this.ime = ime;
-		this.kategorija = kategorija;
+	private VirtualnaMasina() {
 		this.diskovi = new ArrayList<Disk>();
 		this.aktivnosti = new ArrayList<VMActivity>();
+	}
+	
+	public VirtualnaMasina(String ime, KategorijaVM kategorija) {
+		this();
+		this.ime = ime;
+		this.kategorija = kategorija;
 	}
 
 	public void addDisk(Disk d) {

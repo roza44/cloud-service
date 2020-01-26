@@ -14,15 +14,8 @@ public class OrganizacijaService {
 		// Simulate
 		organizacije = new ArrayList<Organizacija>();
 		
-		Organizacija org1 = new Organizacija("Org1", "opis1");
-		org1.dodajKorisnika(new Korisnik("roza44", "pass", "Joca", "Boca", null, "admin"));
-		org1.dodajResurs(new VirtualnaMasina("VM1", new KategorijaVM("Kat1", 4, 8.5, 32)));
-		organizacije.add(org1);
-		
-		Organizacija org2 = new Organizacija("Org2", "opis2");
-		org2.dodajKorisnika(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", null, "superadmin"));
-		org2.dodajResurs(new VirtualnaMasina("VM2", new KategorijaVM("Kat2", 8, 20, 128)));
-		organizacije.add(org2);
+		organizacije.add(new Organizacija("Org1", "opis1"));
+		organizacije.add(new Organizacija("Org2", "opis2"));
 		
 		helpers.FileHandler.saveOrgs(organizacije);
 		///
@@ -31,21 +24,22 @@ public class OrganizacijaService {
 	public static void initialize() {
 		organizacije = FileHandler.loadOrgs();
 		
-		ArrayList<Korisnik> users;
-		ArrayList<VirtualnaMasina> vms;
+		ArrayList<Korisnik> users = UserService.getUsers();
+		ArrayList<VirtualnaMasina> vms = VMService.getVirtualMachines();
 		
 		for (Organizacija org : organizacije) {
-			users = org.getKorisnici();
-			
-			for (int i=0; i < users.size(); i++) {
-				users.set(i, UserService.getUser(users.get(i).getEmail()));
-				users.get(i).setOrganizacija(org);
+			for (Korisnik k : users) {
+				if (k.getOrganizacija().getIme().equals(org.getIme())) {
+					org.dodajKorisnika(k);
+					k.setOrganizacija(org);
+				}
 			}
 			
-			vms = org.getResursi();
-			
-			for (int i=0; i < vms.size(); i++) {
-				vms.set(i, VMService.getVirtualMachine(vms.get(i).getIme()));
+			for (VirtualnaMasina v : vms) {
+				if (v.getOrganizacija().getIme().equals(org.getIme())) {
+					org.dodajResurs(v);
+					v.setOrganizacija(org);
+				}
 			}
 		}
 	}

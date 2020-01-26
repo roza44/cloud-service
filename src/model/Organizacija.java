@@ -10,17 +10,19 @@ public class Organizacija {
 	private String opis;
 	private String slikaPutanja;
 	
-	private ArrayList<Korisnik> korisnici;
-	private ArrayList<VirtualnaMasina> resursi;
+	private transient ArrayList<Korisnik> korisnici;
+	private transient ArrayList<VirtualnaMasina> resursi;
 	
-	
-	public Organizacija(String ime, String opis) {
-		super();
-		this.ime = ime;
-		this.opis = opis;
+	private Organizacija() {		
 		this.korisnici = new ArrayList<Korisnik>();
 		this.resursi = new ArrayList<VirtualnaMasina>();
 	}
+	
+	public Organizacija(String ime, String opis) {
+		this.ime = ime;
+		this.opis = opis;
+	}
+	
 	public String getIme() {
 		return ime;
 	}

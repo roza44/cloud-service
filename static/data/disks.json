@@ -1,1 +1,1 @@
-[{"ime":"Disk1","tip":"ssd","kapacitet":1.2},{"ime":"Disk2","tip":"hdd","kapacitet":700.45}]
+[{"ime":"Disk1","tip":"ssd","kapacitet":1.2,"vm":{"ime":"VM1","kategorija":{"ime":"Kat1","brojJezgara":4,"ram":8.5,"gpuJezgra":32},"aktivnosti":[]}},{"ime":"Disk2","tip":"hdd","kapacitet":700.45,"vm":{"ime":"VM2","kategorija":{"ime":"Kat2","brojJezgara":8,"ram":20.0,"gpuJezgra":128},"aktivnosti":[]}}]
