@@ -40,7 +40,7 @@ public class OrganizacijaController {
 		
 		OrganizacijaService.add(org);
 		
-		return "OK";
+		return org;
 	};
 	
 	public static Route updateOne = (req, res) -> {
@@ -54,7 +54,8 @@ public class OrganizacijaController {
 			res.status(404);
 			return "Organization not found!";
 		}
-		return "OK";
+		
+		return g.toJson(OrganizacijaService.getOrganizacija(org.getIme()));
 	};
 	
 	public static Route setImage = (req, res) -> {
@@ -70,7 +71,7 @@ public class OrganizacijaController {
 			res.status(404);
 			return "Organization not found!";
 		}
-		return "OK";
+		return g.toJson(OrganizacijaService.getOrganizacija(orgName));
 	};
 	
 }

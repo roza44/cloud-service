@@ -1,5 +1,4 @@
 Vue.component("cat_modal", {
-
     data : function() {
 
         return {

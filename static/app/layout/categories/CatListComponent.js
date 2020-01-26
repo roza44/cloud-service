@@ -30,9 +30,11 @@ Vue.component("cat_list", {
           </tr>
         </tbody>
       </table>
+      
       <button type="button" class="btn btn-outline-primary btn-lg btn-block" v-on:click="showAdd">
       Dodaj kategoriju
       </button>
+
       <cat_modal ref="catRef" @changeCat="changeCat($event)" @addCat="addCat($event)" @deleteCat="deleteCat($event)">
       </cat_modal>
     </div>

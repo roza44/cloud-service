@@ -26,6 +26,13 @@ Vue.component("org_list", {
             </tr>
         </tbody>
         </table>
+
+        <button type="button" class="btn btn-outline-primary btn-lg btn-block" @click="editOrg(null)">
+        Dodaj organizaciju
+        </button>
+
+        <org_modal ref="orgModal" @editOrg="orgEdited($event)" @addOrg="orgAdded($event)">
+        </org_modal>
     </div>
     `
     ,
@@ -43,7 +50,21 @@ Vue.component("org_list", {
         },
 
         editOrg: function(org) {
-            this.$router.push("/openOrg/" + org.ime);
+            // Show modal
+            this.$refs.orgModal.show(org);
+        },
+
+        orgAdded : function(org) {
+            this.organizations.push(org);
+        },
+          
+        orgEdited : function(org) {
+            for(i=0; i < this.organizations.length; i++) {
+                if(this.organizations[i].ime === org.ime) {
+                    this.organizations.splice(i, 1, org);
+                    break;
+                }
+            }
         }
     },
 
