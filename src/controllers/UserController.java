@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 
 import gson_classes.EnsureInfo;
@@ -19,6 +21,7 @@ public class UserController {
 		if(UserService.checkLogin(li.username, li.password)) {
 			Korisnik k = UserService.getUser(li.username);
 			req.session(true).attribute("role", k.getUloga());
+			req.session(false).attribute("username", k.getEmail());
 			return "OK";
 		} else {
 			res.status(400);
@@ -44,7 +47,15 @@ public class UserController {
 	
 	public static Route getAll = (req, res) -> {
 		res.type("application/json");
-		return g.toJson(UserService.getUsers());
+		Session s = req.session(false);
+		ArrayList<Korisnik> users;
+		
+		if(s.attribute("role").equals("superadmin"))
+			users = UserService.getUsers();
+		else
+			users = UserService.accessibleUsers(s.attribute("username"));
+		
+		return g.toJson(users);
 	};
 	
 	public static Route logout = (req,res) -> {
