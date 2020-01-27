@@ -92,4 +92,13 @@ public class OrganizacijaService {
 		}
 
 	}
+	
+	public static ArrayList<String> getIds() {
+		ArrayList<String> ids = new ArrayList<String>();
+		
+		for(Organizacija o : organizacije)
+			ids.add(o.getIme());
+		
+		return ids;
+	}
 }

@@ -3,11 +3,14 @@ Vue.component("user_modal", {
     data : function() {
 
         return {
+            orgIds : [],
             type : "",
             email : "",
             name : "",
             secondname : "",
             password : "",
+            selRole : "",
+            selOrg : "",
             role : ""
         }
 
@@ -43,10 +46,16 @@ Vue.component("user_modal", {
                         <input type="text" class="form-control" id="formGroupExampleInput4" v-model="secondname">
                     </div>
                     <div class="form-group">
-                        <label for="roleSel">Uloga</label>
-                        <select ref="select" id="roleSel" class="form-control">
+                        <label for="select1">Uloga</label>
+                        <select id="select1" v-model="selRole" class="form-control">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div v-if="role==='superadmin'" class="form-group">
+                        <label for="select2">Organizacija</label>
+                        <select id="select2" v-model="selOrg" class="form-control">
+                            <option v-for="o in orgIds" :value="o">{{o}}</option>
                         </select>
                     </div>
                 </form>
@@ -65,30 +74,39 @@ Vue.component("user_modal", {
     `,
 
     methods: {
+        //Prikazivanje modala u zavisnosti od modela
         show : function(model) {
             this.fillContent(model);
             $("#exampleModal").modal('show');
         },
 
+        //Popunjavanje polja modala. Ukoliko nema modela za prikaz postavljaju se default polja
         fillContent : function(model) {
-            if(model == null)
-                this.setData("", "", "", "", null, 'add');
+            if(model == null) {
+                //Ukoliko je korisnik admin on nema opciju izbora organizacije, vec se smatra da
+                //se novi korisnik dodaje u organizaciju admina
+                var org = (this.role==='admin')? "None": this.orgIds[0];
+                this.setData("", "", "", "", "user", org, 'add');
+            }
             else
             {
-                this.setData(model.email, model.ime, model.prezime, model.lozinka, model.uloga, 'change');
+                this.setData(model.email, model.ime, model.prezime, model.lozinka,
+                             model.uloga, model.organizacija.ime, 'change');
             }
         },
 
-        setData  : function(email, name, secondname, password, selRole, type)
+        setData  : function(email, name, secondname, password, selRole, selOrg, type)
         {
             this.email = email;
             this.name = name;
             this.secondname = secondname;
             this.password = password;
-            this.$refs.select.selectedIndex = (selRole === "admin")? 1:0;
+            this.selRole = selRole;
+            this.selOrg = selOrg;
             this.type = type;
         },
 
+        //dodavanje novog korisnika
         add : function() {
 
             if(!this.validate() || this.email === "")
@@ -96,8 +114,8 @@ Vue.component("user_modal", {
             else {
                 var self = this;
                 axios
-                .post("rest/Users/addUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname,
-                                             "lozinka" : this.password, "uloga" : this.$refs.select.value})
+                .post("rest/Users/addUser/" + self.selOrg, {"email" : self.email, "ime" : self.name, "prezime" : self.secondname,
+                                                           "lozinka" : this.password, "uloga" : this.selRole})
                 .then(response => {
                     this.$emit("addUser", response.data);
                 })
@@ -106,6 +124,7 @@ Vue.component("user_modal", {
             }
         },
 
+        //izmena korisnika
         change : function() {
             if(!this.validate() || this.email === "")
                 alert("Nevalidna izmena! Sva polja moraju biti popunjena!");
@@ -121,6 +140,7 @@ Vue.component("user_modal", {
 
         },
 
+        //brisanje korisnika
         deleteUser : function() {
             var self = this;
             axios
@@ -134,6 +154,7 @@ Vue.component("user_modal", {
             $("#exampleModal").modal('hide');
         },
 
+        //validacija polja modala
         validate : function() {
             if(this.name === "") return false;
             if(this.secondname === "") return false;
@@ -145,6 +166,18 @@ Vue.component("user_modal", {
 
     mounted () {
         this.role = localStorage.getItem('role');
+
+        var self = this;
+        if(this.role === 'superadmin') { //dobavi id listu organizacija ukuliko je korisnik koji dodaje super admin
+            axios
+            .get("rest/Organizations/getIds")
+            .then( response => { 
+                self.orgIds = response.data; 
+            })
+            .catch( function(error) {
+                alert("Neuspesno dobavljanje id organizacija!");
+            });
+        }
     }
 
 

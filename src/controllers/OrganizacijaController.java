@@ -1,18 +1,11 @@
 package controllers;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-import javax.servlet.MultipartConfigElement;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
-import gson_classes.LoginInfo;
 import model.Organizacija;
 import services.OrganizacijaService;
-import services.UserService;
 import spark.Route;
 
 public class OrganizacijaController {
@@ -79,6 +72,11 @@ public class OrganizacijaController {
 		}
 
 		return g.toJson(OrganizacijaService.getOrganizacija(orgName));
+	};
+	
+	public static Route getIds = (req, res) -> {
+		res.type("application/json");
+		return g.toJson(OrganizacijaService.getIds());
 	};
 	
 }
