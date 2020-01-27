@@ -38,7 +38,12 @@ public class OrganizacijaController {
 		res.type("application/json");
 		Organizacija org = g.fromJson(req.body(), Organizacija.class);
 		
-		OrganizacijaService.add(org);
+		try {
+			OrganizacijaService.add(org);			
+		} catch (exceptions.RecordIDAlreadyTaken e) {			
+			res.status(400);
+			return "Organizacija s prosledjenim imenom vec postoji!";
+		}
 		
 		return org;
 	};
@@ -47,10 +52,10 @@ public class OrganizacijaController {
 		res.type("application/json");
 		
 		Organizacija org = g.fromJson(req.body(), Organizacija.class);
-	
-	    boolean ok = OrganizacijaService.update(org);
 		
-		if (!ok) {
+		try {
+			OrganizacijaService.update(org);
+		} catch (exceptions.RecordNotFound e) {
 			res.status(404);
 			return "Organization not found!";
 		}
@@ -65,12 +70,14 @@ public class OrganizacijaController {
 		String orgName = req.params("ime");
 		
 		byte[] data = req.bodyAsBytes();
-		boolean ok = OrganizacijaService.setImage(orgName, extension, data);
 		
-		if (!ok) {
+		try {			
+			OrganizacijaService.setImage(orgName, extension, data);
+		} catch (exceptions.RecordNotFound e) {			
 			res.status(404);
 			return "Organization not found!";
 		}
+
 		return g.toJson(OrganizacijaService.getOrganizacija(orgName));
 	};
 	

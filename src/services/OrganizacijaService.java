@@ -2,6 +2,8 @@ package services;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import exceptions.RecordIDAlreadyTaken;
+import exceptions.RecordNotFound;
 import helpers.FileHandler;
 import model.KategorijaVM;
 import model.Korisnik;
@@ -58,34 +60,35 @@ public class OrganizacijaService {
 		return null;
 	}
 	
-	public static boolean setImage(String ime, String extension, byte[] data) {
+	public static void setImage(String ime, String extension, byte[] data) throws RecordNotFound {
 		Organizacija org = getOrganizacija(ime);
 		if (org == null) {
-			return false;
+			throw new RecordNotFound("Organizacija " + ime + " ne postoji");
 		} else {
 			org.setSlikaPutanja(org.getSlikaIme() + "." + extension);
 			helpers.FileHandler.saveImage(org.getSlikaIme(), extension, data);
-			return true;
 		}
 	}
-	public static void add(Organizacija org) {
+	
+	public static void add(Organizacija org) throws RecordIDAlreadyTaken {
+		Organizacija sameName = getOrganizacija(org.getIme());
+		if (sameName != null) throw new RecordIDAlreadyTaken("Organizacija " + org.getIme() + " vec postoji");
 		organizacije.add(org);
 		
 		// Save
 		helpers.FileHandler.saveOrgs(organizacije);
 	}
 	
-	public static boolean update(Organizacija newObj) {
+	public static void update(Organizacija newObj) throws RecordNotFound {
 		Organizacija org = getOrganizacija(newObj.getIme());
 		if (org == null) {
-			return false;
+			throw new RecordNotFound("Organizacija " + newObj.getIme() + " ne postoji");
 		} else {
 			org.setIme(newObj.getIme());
 			org.setOpis(newObj.getOpis());
 
 			// Save
 			helpers.FileHandler.saveOrgs(organizacije);
-			return true;
 		}
 
 	}
