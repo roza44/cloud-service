@@ -2,7 +2,8 @@ Vue.component("user_list", {
 
     data: function() {
         return {
-            user_list : []
+            user_list : [],
+            role : ""
         }
     },
 
@@ -17,6 +18,7 @@ Vue.component("user_list", {
             <th>Korisnicko ime</th>
             <th>Ime</th>
             <th>Prezime</th>
+            <th v-if="role==='superadmin'">Organizacija</th>
           </tr>
         </thead>
         <tbody v-for="u in user_list">
@@ -25,6 +27,7 @@ Vue.component("user_list", {
               <td>{{u.email}}</td>
               <td>{{u.ime}}</td>
               <td>{{u.prezime}}</td>
+              <td v-if="role==='superadmin'">{{u.organizacija.ime}}</td>
           </tr>
         </tbody>
       </table>
@@ -68,8 +71,12 @@ Vue.component("user_list", {
     },
 
     mounted () {
+
+      //dobavljanje uloge
+      this.role = localStorage.getItem('role');
+      
+      //dobavljanje korisnika
       var self = this;
-        
       axios
       .get("rest/Users/getAll")
       .then(response => {

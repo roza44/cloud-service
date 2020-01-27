@@ -36,13 +36,13 @@ Vue.component("default_layout", {
                                 Virtuelne mašine <span class="sr-only">(current)</span>
                             </router-link>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="role==='superadmin'" class="nav-item">
                             <router-link class="nav-link" to="/organizations">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                                 Organizacije
                             </router-link>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="role==='superadmin' || role==='admin'" class="nav-item">
                             <router-link class="nav-link" to="/users">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                                 Korisnici
