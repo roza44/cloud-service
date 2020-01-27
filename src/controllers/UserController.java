@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import gson_classes.EnsureInfo;
 import gson_classes.LoginInfo;
 import model.Korisnik;
+import model.Organizacija;
+import services.OrganizacijaService;
 import services.UserService;
 import spark.Route;
 import spark.Session;
@@ -72,10 +74,28 @@ public class UserController {
 			return g.toJson("Korisnik sa unetim email-om vec postoji!");
 		}
 		
+		Session s = req.session(false);
+		
+		//Set the organization of user
+		if(s.attribute("role").equals("admin")) {
+			Korisnik tempK = UserService.getUser(s.attribute("username"));
+			Organizacija o1 = tempK.getOrganizacija();
+			bindUser(k, o1);
+		}
+		else {
+			Organizacija o2 = OrganizacijaService.getOrganizacija(req.params(":organization"));
+			bindUser(k, o2);
+		}
+		
 		res.status(200);
 		UserService.addUser(k);
 		return g.toJson(k);
 	};
+	
+	private static void bindUser(Korisnik k, Organizacija o) {
+		k.setOrganizacija(o);
+		o.dodajKorisnika(k);
+	}
 	
 	public static Route changeUser = (req, res) -> {
 		res.type("application/json");
