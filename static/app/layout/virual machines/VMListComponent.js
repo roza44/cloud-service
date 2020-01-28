@@ -2,7 +2,8 @@ Vue.component("vm_list", {
 
     data: function() {
         return {
-            vm_list : null
+            vm_list : [],
+            role : ""
         }
     },
 
@@ -18,6 +19,7 @@ Vue.component("vm_list", {
             <th>Broj jezgara</th>
             <th>RAM</th>
             <th>Broj GPU jezgara</th>
+            <th v-if="role==='superadmin'">Organizacija</th>
           </tr>
         </thead>
         <tbody v-for="v in vm_list">
@@ -27,17 +29,26 @@ Vue.component("vm_list", {
               <td>{{v.kategorija.brojJezgara}}</td>
               <td>{{v.kategorija.ram}}</td>
               <td>{{v.kategorija.gpuJezgra}}</td>
+              <td v-if="role==='superadmin'">{{v.organizacija.ime}}</td>
           </tr>
         </tbody>
       </table>
+
     </div>
     
     `,
 
-    mounted () {
+    methods : {
 
+      add : function(vm) {
+        this.vm_list.push(vm);
+      }
+    },
+
+    mounted () {
+        this.role = localStorage.getItem('role');
         var self = this;
-        
+
         axios
         .get("rest/VirualMachines/getAll")
         .then(response => {

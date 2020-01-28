@@ -51,5 +51,10 @@ public class CatController {
 		helpers.FileHandler.saveCats(CatService.getAll());
 		return g.toJson(delK);
 	};
+	
+	public static Route getIds = (req, res) -> {
+		res.type("application/json");
+		return g.toJson(CatService.getIds());
+	};
 
 }
