@@ -63,7 +63,7 @@ Vue.component("user_modal", {
             <div class="modal-footer">
                 <button v-if="type==='add'" v-on:click="add" type="button" class="btn btn-primary">Dodaj</button>
                 <button v-if="type==='change'" v-on:click="change" type="button" class="btn btn-primary">Izmeni</button>
-                <button v-if="type==='change'" v-on:click="deleteUser" type="button" class="btn btn-primary" style="background-color:coral">
+                <button v-if="type==='change'" v-on:click="deleteUser" type="button" class="btn btn-warning">
                     Izbrisi korisnika
                 </button>
             </div>
@@ -114,8 +114,7 @@ Vue.component("user_modal", {
             else {
                 var self = this;
                 axios
-                .post("rest/Users/addUser/" + self.selOrg, {"email" : self.email, "ime" : self.name, "prezime" : self.secondname,
-                                                           "lozinka" : this.password, "uloga" : this.selRole})
+                .post("rest/Users/addUser/" + self.selOrg, {"email" : self.email, "ime" : self.name, "prezime" : self.secondname,"lozinka" : this.password, "uloga" : this.selRole})
                 .then(response => {
                     this.$emit("addUser", response.data);
                 })
@@ -131,7 +130,7 @@ Vue.component("user_modal", {
             else {
                 var self = this;
                 axios
-                .post("rest/Users/changeUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname, "lozinka" : this.password})
+                .post("rest/Users/changeUser/" + self.selOrg, {"email" : self.email, "ime" : self.name, "prezime" : self.secondname,"lozinka" : this.password, "uloga" : this.selRole})
                 .then(response => {
                     this.$emit("changeUser", response.data);
                 });

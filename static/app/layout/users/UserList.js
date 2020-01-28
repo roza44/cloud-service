@@ -3,7 +3,8 @@ Vue.component("user_list", {
     data: function() {
         return {
             user_list : [],
-            role : ""
+            role : "",
+            username : ""
         }
     },
 
@@ -22,7 +23,7 @@ Vue.component("user_list", {
           </tr>
         </thead>
         <tbody v-for="u in user_list">
-          <tr id="u.email" v-on:click="showChange(u)">
+          <tr v-if="u.email !== username" id="u.email" v-on:click="showChange(u)">
               <td></td>
               <td>{{u.email}}</td>
               <td>{{u.ime}}</td>
@@ -74,6 +75,7 @@ Vue.component("user_list", {
 
       //dobavljanje uloge
       this.role = localStorage.getItem('role');
+      this.username = localStorage.getItem('username');
       
       //dobavljanje korisnika
       var self = this;

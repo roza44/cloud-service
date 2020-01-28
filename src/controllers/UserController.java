@@ -43,6 +43,7 @@ public class UserController {
 		
 		ei.isLogedIn = true;
 		ei.role = s.attribute("role");
+		ei.username = s.attribute("username");
 		return g.toJson(ei);
 		
 	};
@@ -58,6 +59,12 @@ public class UserController {
 			users = UserService.accessibleUsers(s.attribute("username"));
 		
 		return g.toJson(users);
+	};
+	
+	public static Route getUser = (req, res) -> {
+		res.type("application/json");
+		Korisnik k = UserService.getUser(req.params(":username"));
+		return g.toJson(k);
 	};
 	
 	public static Route logout = (req,res) -> {
@@ -89,6 +96,10 @@ public class UserController {
 		
 		res.status(200);
 		UserService.addUser(k);
+		
+		//Save changes
+		helpers.FileHandler.saveUsers(UserService.getUsers());
+		
 		return g.toJson(k);
 	};
 	
@@ -101,12 +112,42 @@ public class UserController {
 		res.type("application/json");
 		Korisnik k = g.fromJson(req.body(), Korisnik.class);
 		Korisnik uk = UserService.updateUser(k.getEmail(), k); // updateUser vraca updateovanog usera
+		
+		if(req.session(false).attribute("role").equals("superadmin")) {
+			Organizacija oldOrg = uk.getOrganizacija();
+			oldOrg.removeUser(uk);
+			
+			Organizacija newOrg = OrganizacijaService.getOrganizacija(req.params(":organization"));
+			bindUser(uk, newOrg);
+		}
+		
+		//Save changes
+		helpers.FileHandler.saveUsers(UserService.getUsers());
+		
 		return g.toJson(uk);
 	};
 	
 	public static Route deleteUser = (req, res) -> {
 		res.type("application/json");
 		Korisnik k = g.fromJson(req.body(), Korisnik.class);
-		return g.toJson(UserService.deleteUser(k));
+		
+		Korisnik realK = UserService.deleteUser(k);
+		realK.getOrganizacija().removeUser(realK);
+		
+		//Save changes
+		helpers.FileHandler.saveUsers(UserService.getUsers());
+		
+		return g.toJson(realK);
+	};
+	
+	public static Route updateProfile = (req, res) -> {
+		res.type("application/json");
+		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		Korisnik uk = UserService.updateUser(k.getEmail(), k);
+		
+		//Save changes
+		helpers.FileHandler.saveUsers(UserService.getUsers());
+		
+		return g.toJson(uk);
 	};
 }

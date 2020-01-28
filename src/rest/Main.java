@@ -46,9 +46,11 @@ public class Main {
 		get("/rest/Users/info", UserController.getInfo);
 		get("/rest/Users/getAll", UserController.getAll);
 		get("/rest/Users/logout", UserController.logout);
+		get("/rest/Users/getUser/:username", UserController.getUser);
 		post("/rest/Users/addUser/:organization", UserController.addUser);
-		post("/rest/Users/changeUser", UserController.changeUser);
+		post("/rest/Users/changeUser/:organization", UserController.changeUser);
 		post("/rest/Users/deleteUser", UserController.deleteUser);
+		post("/rest/Users/updateProfile", UserController.updateProfile);
 		
 		// ORGANIZATIONS
 		get("rest/Organizations/getIds", OrganizacijaController.getIds);

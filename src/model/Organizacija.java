@@ -57,6 +57,8 @@ public class Organizacija {
 		this.slikaPutanja = slikaPutanja;
 	}
 	
-	
+	public void removeUser(Korisnik k) {
+		this.korisnici.remove(k);
+	}
 
 }
