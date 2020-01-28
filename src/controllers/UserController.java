@@ -24,6 +24,8 @@ public class UserController {
 			Korisnik k = UserService.getUser(li.username);
 			req.session(true).attribute("role", k.getUloga());
 			req.session(false).attribute("username", k.getEmail());
+			req.session(false).attribute("orgName", k.getOrganizacija().getIme());
+			
 			return "OK";
 		} else {
 			res.status(400);
@@ -44,6 +46,7 @@ public class UserController {
 		ei.isLogedIn = true;
 		ei.role = s.attribute("role");
 		ei.username = s.attribute("username");
+		ei.orgName = s.attribute("orgName");
 		return g.toJson(ei);
 		
 	};

@@ -36,6 +36,7 @@ router.beforeEach((to, from, next) => {
     {
       localStorage.setItem("role", ei.role);
       localStorage.setItem("username", ei.username);
+      localStorage.setItem("orgName", ei.orgName);
       next();
     }
   })
