@@ -1,14 +1,12 @@
 package rest;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.get;
-import static spark.Spark.staticFiles;
+import static spark.Spark.*;
 
 import java.io.File;
 import java.io.IOException;
 
 import controllers.CatController;
+import controllers.DiskController;
 import controllers.OrganizacijaController;
 import controllers.UserController;
 import controllers.VMController;
@@ -59,6 +57,13 @@ public class Main {
 		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
 		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);
+		
+		// DISKS
+		get("rest/Disks/", DiskController.getAll);
+		post("rest/Disks/", DiskController.insertOne);
+		post("rest/Disks/:ime", DiskController.updateOne);
+		delete("rest/Disks/:ime", DiskController.deleteOne);
+		
 		
 		// VIRTUAL MACHINES
 		get("rest/VirualMachines/getAll", VMController.getAll);
