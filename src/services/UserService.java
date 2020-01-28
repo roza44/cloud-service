@@ -20,8 +20,9 @@ public class UserService {
 		///
 	}
 	
-	public static void initialize() {
-		//simulate();
+	public static void initialize(boolean testMode) {
+		if (testMode) simulate();
+		
 		users = helpers.FileHandler.loadUsers();
 	}
 	

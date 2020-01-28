@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import exceptions.RecordIDAlreadyTaken;
 import exceptions.RecordNotFound;
 import helpers.FileHandler;
+import model.Disk;
 import model.KategorijaVM;
 import model.Korisnik;
 import model.Organizacija;
@@ -23,11 +24,14 @@ public class OrganizacijaService {
 		///
 	}
 	
-	public static void initialize() {
+	public static void initialize(boolean testMode) {
+		if (testMode) simulate();
+		
 		organizacije = FileHandler.loadOrgs();
 		
 		ArrayList<Korisnik> users = UserService.getUsers();
 		ArrayList<VirtualnaMasina> vms = VMService.getVirtualMachines();
+		ArrayList<Disk> allDisks = DiskService.getDisks();
 		
 		for (Organizacija org : organizacije) {
 			for (Korisnik k : users) {
@@ -41,6 +45,13 @@ public class OrganizacijaService {
 				if (v.getOrganizacija().getIme().equals(org.getIme())) {
 					org.dodajResurs(v);
 					v.setOrganizacija(org);
+				}
+			}
+			
+			for (Disk d : allDisks) {
+				if (d.getOrganizacija().getIme().equals(org.getIme())) {					
+					org.dodajDisk(d);
+					d.setOrganizacija(org);
 				}
 			}
 		}

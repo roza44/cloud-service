@@ -7,13 +7,24 @@ public class Disk {
 	private double kapacitet;
 	
 	private VirtualnaMasina vm;
+	private Organizacija organizacija;
 	
-	public Disk(String ime, String tip, double kapacitet, VirtualnaMasina vm) {
+
+	public Disk(String ime, String tip, double kapacitet, VirtualnaMasina vm, Organizacija org) {
 		super();
 		this.ime = ime;
 		this.tip = tip;
 		this.kapacitet = kapacitet;
 		this.vm = vm;
+		this.organizacija = org;
+	}
+	
+	public Organizacija getOrganizacija() {
+		return organizacija;
+	}
+	
+	public void setOrganizacija(Organizacija organizacija) {
+		this.organizacija = organizacija;
 	}
 
 	public String getIme() {

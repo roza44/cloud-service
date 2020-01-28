@@ -18,8 +18,8 @@ public class CatService {
 		///
 	}
 	
-	public static void initialize() {
-		//simulate();
+	public static void initialize(boolean testMode) {
+		if (testMode) simulate();
 		
 		categories = helpers.FileHandler.loadCats();
 		

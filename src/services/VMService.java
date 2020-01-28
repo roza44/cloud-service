@@ -28,9 +28,10 @@ public class VMService {
 		///
 	}
 	
-	public static void initialize()
+	public static void initialize(boolean testMode)
 	{
-		//simulate();
+		if (testMode) simulate();
+		
 		virtualMachines = helpers.FileHandler.loadVMs();
 		
 		ArrayList<Disk> allDisks = DiskService.getDisks();

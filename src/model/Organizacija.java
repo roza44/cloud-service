@@ -12,10 +12,24 @@ public class Organizacija {
 	
 	private transient ArrayList<Korisnik> korisnici;
 	private transient ArrayList<VirtualnaMasina> resursi;
+	private transient ArrayList<Disk> diskovi;
 	
-	private Organizacija() {		
+	public ArrayList<Disk> getDiskovi() {
+		return diskovi;
+	}
+
+	public void setDiskovi(ArrayList<Disk> diskovi) {
+		this.diskovi = diskovi;
+	}
+	
+	public void dodajDisk(Disk d) {
+		this.diskovi.add(d);
+	}
+
+	private Organizacija() {
 		this.korisnici = new ArrayList<Korisnik>();
 		this.resursi = new ArrayList<VirtualnaMasina>();
+		this.diskovi = new ArrayList<Disk>();
 	}
 	
 	public Organizacija(String ime, String opis) {

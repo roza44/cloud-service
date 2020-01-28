@@ -18,17 +18,17 @@ import services.VMService;
 
 public class Main {
 
-	static void initDatabase() {
+	static void initDatabase(boolean testMode) {
 		// Load disks
-		DiskService.initialize();
+		DiskService.initialize(testMode);
 		// Load categories
-		CatService.initialize();
+		CatService.initialize(testMode);
 		// Load VMs and connect references to categories and disks
-		VMService.initialize();
+		VMService.initialize(testMode);
 		// Load users
-		UserService.initialize();
+		UserService.initialize(testMode);
 		// Load organizations and connect refs to users
-		OrganizacijaService.initialize();
+		OrganizacijaService.initialize(testMode);
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -37,7 +37,7 @@ public class Main {
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
 		// Load all data and initialize
-		initDatabase();
+		initDatabase(false);
 		
 		// USERS
 		post("/rest/Users/login", UserController.verifyLogin);
