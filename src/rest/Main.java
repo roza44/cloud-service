@@ -60,6 +60,7 @@ public class Main {
 		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);
 		
 		// DISKS
+		get("rest/Disks/getIds/:organization", DiskController.getIds);
 		get("rest/Disks/", DiskController.getAll);
 		post("rest/Disks/", DiskController.insertOne);
 		post("rest/Disks/:ime", DiskController.updateOne);
@@ -67,9 +68,11 @@ public class Main {
 		
 		
 		// VIRTUAL MACHINES
-		get("rest/VirualMachines/getAll", VMController.getAll);
+		get("/rest/VirualMachines/getAll", VMController.getAll);
+		post("/rest/VirualMachines/addVM", VMController.addVM);
 		
 		// CATEGORIES
+		get("/rest/Categories/getIds", CatController.getIds);
 		get("/rest/Categories/getAll", CatController.getAll);
 		post("/rest/Categories/addCat", CatController.addCat);
 		post("/rest/Categories/changeCat", CatController.changeCat);

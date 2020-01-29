@@ -52,6 +52,19 @@ public class VMService {
 		helpers.FileHandler.saveVMs(virtualMachines);
 	}
 	
+	public static boolean contains(VirtualnaMasina vm) {
+		return virtualMachines.contains(vm);
+	}
+	
+	public static boolean contains(String vm) {
+
+		for(VirtualnaMasina m : virtualMachines)
+			if(m.getIme().equals(vm))
+				return true;
+		
+		return false;
+	}
+	
 	public static ArrayList<VirtualnaMasina> getVirtualMachines() {
 		return virtualMachines;
 	}
@@ -72,6 +85,10 @@ public class VMService {
 				return true;
 		
 		return false;
+	}
+	
+	public static void addVM(VirtualnaMasina vm) {
+		virtualMachines.add(vm);
 	}
 
 }

@@ -23,6 +23,21 @@ public class VirtualnaMasina {
 		this.aktivnosti = new ArrayList<VMActivity>();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		 if (obj == this) { 
+	            return true; 
+	     }  
+	     
+		 if (!(obj instanceof Korisnik)) { 
+	         return false; 
+	     }  
+	        
+		 VirtualnaMasina vm = (VirtualnaMasina) obj; 
+	            
+	     return this.ime.equals(vm.ime);
+	}
+	
 	public VirtualnaMasina(String ime, KategorijaVM kategorija) {
 		this();
 		this.ime = ime;

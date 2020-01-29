@@ -1,5 +1,6 @@
 package services;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import model.KategorijaVM;
@@ -64,6 +65,15 @@ public class CatService {
 			}
 		
 		return retVal;		
+	}
+	
+	public static ArrayList<String> getIds() {
+		
+		ArrayList<String> retVal = new ArrayList<String>();
+		for(KategorijaVM k : categories)
+			retVal.add(k.getIme());
+		
+		return retVal;
 	}
 
 }

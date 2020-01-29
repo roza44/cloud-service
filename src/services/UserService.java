@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.Korisnik;
 import model.Organizacija;
+import model.VirtualnaMasina;
 
 public class UserService {
 	
@@ -58,6 +59,10 @@ public class UserService {
 	
 	public static ArrayList<Korisnik> accessibleUsers(String username) {
 		return getUser(username).getOrganizacija().getKorisnici();
+	}
+	
+	public static ArrayList<VirtualnaMasina> accessibleVMs(String username) {
+		return getUser(username).getOrganizacija().getResursi();
 	}
 	
 	public static Korisnik updateUser(String email, Korisnik newUser) {

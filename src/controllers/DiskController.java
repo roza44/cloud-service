@@ -1,11 +1,16 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 
 import model.Disk;
 import services.DiskService;
 import services.VMService;
+import services.OrganizacijaService;
+import services.UserService;
 import spark.Route;
+import spark.Session;
 
 public class DiskController {
 	private static Gson g = new Gson();
@@ -59,4 +64,31 @@ public class DiskController {
 			return e.getMessage();
 		}
 	};
+	
+	public static Route getIds = (req, res) -> {
+		res.type("application/json");
+		
+		String param = req.params(":organization");
+		ArrayList<String> retVal = new ArrayList<String>();
+		Session s = req.session(false);
+		
+		if(s.attribute("role").equals("admin"))
+			retVal = extractIds(UserService.getUser(s.attribute("username")).getOrganizacija().getDiskovi());
+		else
+			retVal = extractIds(OrganizacijaService.getOrganizacija(param).getDiskovi());
+		
+		return g.toJson(retVal);
+	};
+	
+	private static ArrayList<String> extractIds(ArrayList<Disk> diskovi) {
+		
+		ArrayList<String> retVal = new ArrayList<String>();
+		
+		for(Disk d : diskovi)
+			if(d.getVm() == null)
+				retVal.add(d.getIme());
+		
+		return retVal;
+		
+	}
 }
