@@ -51,6 +51,11 @@ public class DiskService {
 		Disk sameName = getDisk(d.getIme());
 		if (sameName != null) throw new exceptions.RecordIDAlreadyTaken("Disk sa unetim imenom vec postoji");
 		
+		if (d.getVm() != null) {
+			d.setVm(VMService.getVirtualMachine(d.getVm().getIme()));
+		}
+		d.setOrganizacija(OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()));
+		
 		disks.add(d);
 		
 		helpers.FileHandler.saveDisks(disks);
@@ -73,8 +78,8 @@ public class DiskService {
 		
 		OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()).obrisiDisk(d);
 		disks.remove(d);
-		helpers.FileHandler.saveDisks(disks);
 		
+		helpers.FileHandler.saveDisks(disks);
 	}
 	
 	public static Disk getDisk(String ime) {

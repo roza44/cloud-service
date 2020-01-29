@@ -28,10 +28,9 @@ public class DiskController {
 		res.type("application/json");
 		try {
 			Disk d = g.fromJson(req.body(), Disk.class);
-			if (d.getVm() != null) {
-				d.setVm(VMService.getVirtualMachine(d.getVm().getIme()));
-			}
+			
 			DiskService.add(d);
+			
 			return g.toJson(d);
 		} catch (exceptions.RecordIDAlreadyTaken e) {
 			res.status(400);
@@ -43,9 +42,7 @@ public class DiskController {
 		res.type("application/json");
 		try {
 			Disk d = g.fromJson(req.body(), Disk.class);
-			if (d.getVm() != null) {
-				d.setVm(VMService.getVirtualMachine(d.getVm().getIme()));
-			}
+			
 			DiskService.update(d);
 			return g.toJson(DiskService.getDisk(d.getIme()));
 		} catch (exceptions.RecordNotFound e) {
