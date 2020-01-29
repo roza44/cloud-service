@@ -14,7 +14,7 @@ Vue.component("dashboard", {
                 Dodaj virualnu masinu
                 </button>
             </div>
-            <vm_modal @changeList="changeList($event)" @addVM="addVM($event)" ref="vmModal"></vm_modal>
+            <vm_modal @deleteList="deleteList($event)" @changeList="changeList($event)" @addVM="addVM($event)" ref="vmModal"></vm_modal>
         </default_layout>
     `,
 
@@ -30,6 +30,10 @@ Vue.component("dashboard", {
 
         addVM : function(vm) {
             this.$refs.list.add(vm);
+        },
+
+        deleteList : function(vm) {
+            this.$refs.list.delete(vm);
         },
 
         changeList : function(vm) {

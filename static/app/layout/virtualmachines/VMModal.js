@@ -26,7 +26,7 @@ Vue.component("vm_modal", {
                     <div class="modal-header">
                     <h5 v-if="type === 'add'" class="modal-title" id="exampleModalLabel">Dodavanje virtualnih masina</h5>
                     <h5 v-if="type === 'change' && role !== 'user'"class="modal-title" id="exampleModalLabel">Izmena virualne masine: {{name}}</h5>
-                    <h5 v-if="role === 'user'" class="modal-title" id="exampleModalLabel">Pregled virualne masine: {{name}}</h5>
+                    <h5 v-if="role === 'user'" class="modal-title" id="vmViewTitle">Pregled virtualne masine: {{name}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -52,14 +52,16 @@ Vue.component("vm_modal", {
                         <div class="form-group">
                             <label for="discSelect">Diskovi</label>
                             <select id="discSelect" class="mdb-select md-form form-control" multiple  style="width:450px" >
-                                <option v-for="sd in selDiscs" selected :disabled="role === 'user'" :value="sd" :id="sd">{{sd}}</option>
+                                <option v-for="sd in selDiscs" :selected="role !== 'user'" :value="sd" :id="sd" :disabled="role === 'user'">
+                                    {{sd}}
+                                </option>
                                 <option v-if="role !== 'user'" v-for="d in discList" :value="d" :id="d">{{d}}</option>
                             </select>
                         </div>
-                        <div v-if="type === 'change' && role !== 'user'" class="form-group">
+                        <div v-if="type === 'change'" class="form-group">
                             <label for="activities">Aktivnosti</label>
                             <select id="activities" class="mdb-select md-form form-control" multiple  style="width:450px" >
-                                <option v-for="a in activities" selected :value="sd" :id="sd" disabled>
+                                <option v-for="a in activities" :value="a" :id="a" disabled>
                                 {{a.timestamp}}: {{a.turnedOn}}
                                 </option>
                             </select>
@@ -110,7 +112,7 @@ Vue.component("vm_modal", {
             this.active =active;
             this.type = type;
             
-            if(this.role !== 'user')
+            if(this.role !== 'user') //kod korisnika ne updateujemo selektovane diskove posto ih nema
                 this.resetMulitselect();
 
             this.getDiscs(selOrg);
@@ -176,6 +178,7 @@ Vue.component("vm_modal", {
             .delete("rest/VirualMachines/deleteVM/" + self.name)
             .then(response => {
                 this.$emit("deleteList", response.data);
+                $("#mainModal").modal('hide');
             });
         },
 

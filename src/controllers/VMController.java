@@ -56,6 +56,9 @@ public class VMController {
 		
 		res.status(200);
 		VMService.addVM(vm);
+		
+		helpers.FileHandler.saveVMs(VMService.getVirtualMachines());
+		
 		return g.toJson(vm);
 	};
 	
@@ -97,6 +100,8 @@ public class VMController {
 		if(vm.getActivity() != vmInfo.aktivnost)
 			vm.addActivity(vmInfo.aktivnost);
 		
+		helpers.FileHandler.saveVMs(VMService.getVirtualMachines());
+		
 		return g.toJson(vm);
 	};
 	
@@ -111,6 +116,8 @@ public class VMController {
 			d.setVm(null);
 		
 		VMService.removeVM(vm);
+		
+		helpers.FileHandler.saveVMs(VMService.getVirtualMachines());
 		
 		return g.toJson(vm);
 		

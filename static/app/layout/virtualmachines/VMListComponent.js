@@ -52,6 +52,14 @@ Vue.component("vm_list", {
           }
       },
 
+      delete : function(vm) {
+        for(i=0; i < this.vm_list.length; i++)
+          if(this.vm_list[i].ime === vm.ime) {
+              this.vm_list.splice(i, 1);
+              break;
+          }
+      },
+
       changeEmit : function(vm) {
         this.$emit("changeVM", vm);
       }

@@ -60,6 +60,7 @@ public class VirtualnaMasina {
 		this();
 		this.ime = ime;
 		this.kategorija = kategorija;
+		
 	}
 	
 	public void addActivity(boolean turnedOn) {
