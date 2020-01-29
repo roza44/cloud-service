@@ -6,8 +6,12 @@ Vue.component("disk_modal", {
                 ime : "",
                 tip : "",
                 kapacitet : "",
-                vm : null,
-                organizacija: null
+                vm : {
+                    ime: ""
+                },
+                organizacija: {
+                    ime: ""
+                }
             },
 
             type : null,

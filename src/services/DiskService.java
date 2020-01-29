@@ -76,7 +76,9 @@ public class DiskService {
 		d.setTip(newDisk.getTip());
 		
 		// Brisi iz starog vm-a
-		d.getVm().obrisiDisk(d);
+		if (d.getVm() != null) {			
+			d.getVm().obrisiDisk(d);
+		}
 		
 		// Setuj novi vm i dodaj
 		d.setVm(VMService.getVirtualMachine(newDisk.getVm().getIme()));
