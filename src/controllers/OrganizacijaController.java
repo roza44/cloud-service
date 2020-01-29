@@ -53,7 +53,7 @@ public class OrganizacijaController {
 			return "Organizacija s prosledjenim imenom vec postoji!";
 		}
 		
-		return org;
+		return g.toJson(OrganizacijaService.getOrganizacija(org.getIme()));
 	};
 	
 	public static Route updateOne = (req, res) -> {

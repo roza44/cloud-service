@@ -75,25 +75,37 @@ Vue.component("org_modal", {
             if (orgName !== null) {
                 path = path + orgName
             }
+            
+            if(this.validateInput()) {
+                // Send the request
+                axios.post(path, self.org)
+                .then(response => {
+                    // Image
+                    if (self.slikaFile) {
+                        // Upload image
+                        axios.post( '/rest/setOrgImage/' + self.org.ime + "/" + self.slikaFile.name, self.slikaFile)
+                        .then(res => {
+                            self.slikaFile = null;
+                            self.emitEventAndClose(res.data);
+                        })
+                        .catch(function(){
+                            console.log('Failed to upload pic!');
+                        });
+                    } else {
+                        self.emitEventAndClose(response.data);
+                    }
+                })
+                .catch(function(error) {alert(error);});
+            }
+        },
 
-            axios.post(path, self.org)
-            .then(response => {
-                // Image
-                if (self.slikaFile) {
-                    // Upload image
-                    axios.post( '/rest/setOrgImage/' + self.org.ime + "/" + self.slikaFile.name, self.slikaFile)
-                    .then(res => {
-                        self.slikaFile = null;
-                        self.emitEventAndClose(res.data);
-                    })
-                    .catch(function(){
-                        console.log('Failed to upload pic!');
-                    });
-                } else {
-                    self.emitEventAndClose(response.data);
-                }
-            })
-            .catch(function(error) {alert(error);});
+        validateInput: function() {
+            if (this.org.ime === "") {
+                alert("Ime organizacije je obavezno polje!");
+                return false;
+            }
+
+            return true;
         }
     }
 });

@@ -76,9 +76,6 @@ Vue.component("default_layout", {
             </main>
         </div>
         </div>
-
-        <org_modal ref="orgModal">
-        </org_modal>
     </div>
     
     `,

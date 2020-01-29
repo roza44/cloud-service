@@ -66,7 +66,6 @@ public class Main {
 		post("rest/Disks/:ime", DiskController.updateOne);
 		delete("rest/Disks/:ime", DiskController.deleteOne);
 		
-		
 		// VIRTUAL MACHINES
 		get("/rest/VirualMachines/getAll", VMController.getAll);
 		post("/rest/VirualMachines/addVM", VMController.addVM);
@@ -77,7 +76,6 @@ public class Main {
 		post("/rest/Categories/addCat", CatController.addCat);
 		post("/rest/Categories/changeCat", CatController.changeCat);
 		post("/rest/Categories/deleteCat", CatController.deleteCat);
-
 	}
 
 }
