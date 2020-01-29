@@ -38,20 +38,17 @@ Vue.component("disk_modal", {
                     <div v-if="type==='add'" class="form-group">
                         <label for="formGroupExampleInput1">Ime</label>
 
-                        <input v-if="role === 'user'" type="text" class="form-control" id="formGroupExampleInput1" v-model="disk.ime" readonly>
-                        <input v-else type="text" class="form-control" id="formGroupExampleInput1" v-model="disk.ime">
+                        <input type="text" class="form-control" id="formGroupExampleInput1" v-model="disk.ime" :readonly="role === 'user'">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Tip</label>
 
-                        <input v-if="role === 'user'" type="text" class="form-control" id="formGroupExampleInput2" v-model="disk.tip" readonly>
-                        <input v-else type="text" class="form-control" id="formGroupExampleInput2" v-model="disk.tip">
+                        <input type="text" class="form-control" id="formGroupExampleInput2" v-model="disk.tip" :readonly="role === 'user'">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput3">Kapacitet</label>
 
-                        <input v-if="role === 'user'" type="text" class="form-control" id="formGroupExampleInput3" v-model="disk.kapacitet" readonly>
-                        <input v-else type="text" class="form-control" id="formGroupExampleInput3" v-model="disk.kapacitet">
+                        <input type="text" class="form-control" id="formGroupExampleInput3" v-model="disk.kapacitet" :readonly="role === 'user'">
                     </div>
 
                     <div v-if="type === 'add'">
