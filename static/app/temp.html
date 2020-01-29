@@ -1,5 +1,16 @@
-<div>
-    <div class="text-center">
-        <img src="../data/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+<form v-if="role === 'user'">
+    <div class="form-group">
+        <label for="view1">Kategorija</label>
+        <input v-model="selCat" id="view1" type="text" class="form-control" readonly="true">
     </div>
-</div>
+    <div class="form-group">
+        <label for="view2">Diskovi</label>
+        <select id="view2" class="mdb-select md-form form-control" multiple  style="width:450px" >
+            <option v-for="sd in selDiscs" selected :value="sd" disabled selected>{{sd}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <br>
+        <label>Aktivnost: <input type="checkbox" v-model="active" disabled="true"></input></label>
+    </div>
+</form>

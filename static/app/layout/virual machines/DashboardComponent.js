@@ -8,13 +8,13 @@ Vue.component("dashboard", {
 
     template: `
         <default_layout>
-            <vm_list ref="list"></vm_list>
+            <vm_list @changeVM="showChange($event)" ref="list"></vm_list>
             <div class="container-fluid">
                 <button v-if="role==='admin' || role==='superadmin'" v-on:click="showAdd" type="button" class="btn btn-outline-primary btn-lg btn-block">
                 Dodaj virualnu masinu
                 </button>
             </div>
-            <vm_modal @addVM="addVM($event)" ref="vmModal"></vm_modal>
+            <vm_modal @changeList="changeList($event)" @addVM="addVM($event)" ref="vmModal"></vm_modal>
         </default_layout>
     `,
 
@@ -25,11 +25,15 @@ Vue.component("dashboard", {
         },
 
         showChange : function(model) {
-
+            this.$refs.vmModal.show(model);
         },
 
         addVM : function(vm) {
             this.$refs.list.add(vm);
+        },
+
+        changeList : function(vm) {
+            this.$refs.list.change(vm);
         }
         
     },

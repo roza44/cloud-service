@@ -23,7 +23,7 @@ Vue.component("vm_list", {
           </tr>
         </thead>
         <tbody v-for="v in vm_list">
-          <tr>
+          <tr v-on:click="changeEmit(v)" >
               <td>{{v.ime}}</td>
               <td>{{v.kategorija.ime}}</td>
               <td>{{v.kategorija.brojJezgara}}</td>
@@ -42,6 +42,18 @@ Vue.component("vm_list", {
 
       add : function(vm) {
         this.vm_list.push(vm);
+      },
+
+      change : function(vm) {
+        for(i=0; i < this.vm_list.length; i++)
+          if(this.vm_list[i].ime === vm.ime) {
+              this.vm_list.splice(i, 1, vm);
+              break;
+          }
+      },
+
+      changeEmit : function(vm) {
+        this.$emit("changeVM", vm);
       }
     },
 

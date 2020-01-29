@@ -1,6 +1,6 @@
 package controllers;
 
-import org.eclipse.jetty.server.session.JDBCSessionManager.Session;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
@@ -68,6 +68,53 @@ public class VMController {
 		vm.getDiskovi().add(d);
 		d.setVm(vm);
 	}
+	
+	public static Route getDiscsIds = (req,res) -> {
+		res.type("application/json");
+		
+		ArrayList<String> ids = new ArrayList<String>();
+		for(Disk d : VMService.getVirtualMachine(req.params(":vm")).getDiskovi())
+			ids.add(d.getIme());
+			
+		return g.toJson(ids);
+	};
+	
+	public static Route changeVM = (req, res) -> {
+		res.type("application/json");
+		
+		VmToAdd vmInfo = g.fromJson(req.body(), VmToAdd.class);
+		
+		VirtualnaMasina vm = VMService.getVirtualMachine(vmInfo.ime);
+		
+		vm.setKategorija(CatService.getCat(vmInfo.kategorija));
+		vm.detachDiscs();
+		
+		for(String d : vmInfo.diskovi) {
+			Disk disk = DiskService.getDisk(d);
+			VmDiscBind(vm, disk);
+		}
+		
+		if(vm.getActivity() != vmInfo.aktivnost)
+			vm.addActivity(vmInfo.aktivnost);
+		
+		return g.toJson(vm);
+	};
+	
+	public static Route deleteVM = (req, res) -> {
+		res.type("application/json");
+		
+		VirtualnaMasina vm = VMService.getVirtualMachine(req.params(":vm"));
+		
+		vm.getOrganizacija().getResursi().remove(vm);
+		
+		for(Disk d : vm.getDiskovi())
+			d.setVm(null);
+		
+		VMService.removeVM(vm);
+		
+		return g.toJson(vm);
+		
+	};
 	
 
 }

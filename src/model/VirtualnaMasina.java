@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 
 public class VirtualnaMasina {
@@ -39,6 +40,22 @@ public class VirtualnaMasina {
 	     return this.ime.equals(vm.ime);
 	}
 	
+	public void detachDiscs() {
+		for(Disk d : this.diskovi) {
+			d.setVm(null);
+		}
+		
+		this.diskovi = new ArrayList<Disk>();
+	}
+	
+	public ArrayList<VMActivity> getAktivnosti() {
+		return aktivnosti;
+	}
+
+	public void setAktivnosti(ArrayList<VMActivity> aktivnosti) {
+		this.aktivnosti = aktivnosti;
+	}
+
 	public VirtualnaMasina(String ime, KategorijaVM kategorija) {
 		this();
 		this.ime = ime;
@@ -75,6 +92,13 @@ public class VirtualnaMasina {
 	
 	public void obrisiDisk(Disk disk) {
 		this.diskovi.remove(disk);
+	}
+	
+	public boolean getActivity() {
+		int last = this.aktivnosti.size() - 1;
+		if(last == -1) return false;
+		
+		return this.aktivnosti.get(last).turnedOn;
 	}
 
 }

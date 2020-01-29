@@ -7,12 +7,14 @@ Vue.component("vm_modal", {
             catList : [],
             orgList : [],
             discList : [],
+            selDiscs : [],
 
             //modal values
             name : "",
             selCat : "",
             selOrg : "",
             active : false,
+            activities : [],
             type : ""
         };
     },
@@ -23,7 +25,8 @@ Vue.component("vm_modal", {
                 <div class="modal-content">
                     <div class="modal-header">
                     <h5 v-if="type === 'add'" class="modal-title" id="exampleModalLabel">Dodavanje virtualnih masina</h5>
-                    <h5 v-if="type === 'change'"class="modal-title" id="exampleModalLabel">Izmena virualne masine: {{name}}</h5>
+                    <h5 v-if="type === 'change' && role !== 'user'"class="modal-title" id="exampleModalLabel">Izmena virualne masine: {{name}}</h5>
+                    <h5 v-if="role === 'user'" class="modal-title" id="exampleModalLabel">Pregled virualne masine: {{name}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -36,7 +39,7 @@ Vue.component("vm_modal", {
                         </div>
                         <div class="form-group">
                             <label for="selectVM1">Kategorija</label>
-                            <select v-model="selCat" id="selectVM1" class="form-control">
+                            <select v-model="selCat" id="selectVM1" class="form-control" :disabled="role === 'user'">
                                 <option v-for="c in catList" :value="c">{{c}}</option>
                             </select>
                         </div>
@@ -46,19 +49,33 @@ Vue.component("vm_modal", {
                                 <option v-for="o in orgList" :value="o">{{o}}</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="form-group">
+                            <label for="discSelect">Diskovi</label>
                             <select id="discSelect" class="mdb-select md-form form-control" multiple  style="width:450px" >
-                                <option v-for="d in discList">{{d}}</option>
+                                <option v-for="sd in selDiscs" selected :disabled="role === 'user'" :value="sd" :id="sd">{{sd}}</option>
+                                <option v-if="role !== 'user'" v-for="d in discList" :value="d" :id="d">{{d}}</option>
                             </select>
                         </div>
-                        <div>
+                        <div v-if="type === 'change' && role !== 'user'" class="form-group">
+                            <label for="activities">Aktivnosti</label>
+                            <select id="activities" class="mdb-select md-form form-control" multiple  style="width:450px" >
+                                <option v-for="a in activities" selected :value="sd" :id="sd" disabled>
+                                {{a.timestamp}}: {{a.turnedOn}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <br>
-                            <label>Aktivnost: <input type="checkbox" v-model="active"></input></label>
+                            <label>Aktivnost: <input type="checkbox" v-model="active" :disabled="role === 'user'"></input></label>
                         </div>
                     </form>
                 </div>
                 <div v-if="type === 'add'" class="modal-footer">
                     <button v-on:click="addVm" type="button" class="btn btn-primary">Dodaj</button>
+                </div>
+                <div v-if="type === 'change' && role !== 'user'" class="modal-footer">
+                    <button v-on:click="changeVM" type="button" class="btn btn-primary">Izmeni</button>
+                    <button v-on:click="deleteVM" type="button" class="btn btn-warning">Izbrisi virtualnu masinu</button>
                 </div>
             </div>
             </div>
@@ -75,15 +92,43 @@ Vue.component("vm_modal", {
         fillContent : function(model) {
             var org = (this.role==='superadmin')? this.orgList[0]:"None";
             if(model === null)
-                this.setData("", this.catList[0], org, 'add');
+                this.setData("", this.catList[0], org, [],false, 'add');
+            else {
+                var index = model.aktivnosti.length - 1;
+                var a;
+                if(index === -1) a = false;
+                else a = model.aktivnosti[index].turnedOn;
+                this.setData(model.ime, model.kategorija.ime, model.organizacija.ime, model.aktivnosti, a, 'change');
+            }
         },
 
-        setData : function(name, selCat, selOrg, type) {
+        setData : function(name, selCat, selOrg, activities, active, type) {
             this.name = name;
             this.selCat = selCat;
             this.selOrg = selOrg;
-            this.getDiscs(selOrg);
+            this.activities = activities;
+            this.active =active;
             this.type = type;
+            
+            if(this.role !== 'user')
+                this.resetMulitselect();
+
+            this.getDiscs(selOrg);
+            if(this.type === 'change')
+                this.getVmDiscs(this.name);
+            else
+                this.selDiscs = [];
+        },
+
+        resetMulitselect : function() {
+            this.discList.forEach(element => {
+                document.getElementById(element).selected = false;
+            });
+
+            this.selDiscs.forEach(element => {
+                document.getElementById(element).selected = true;
+            });
+
         },
 
         updateDiscs : function(event) {
@@ -107,6 +152,31 @@ Vue.component("vm_modal", {
             else  
                 alert("Nevalidan unos! Sva polja moraju biti popunjena!");
 
+        },
+
+        changeVM : function() {
+            if(this.validate()) {
+                axios
+                .post("rest/VirualMachines/changeVM", this.formToJSON())
+                .then(response => {
+                    this.$emit("changeList", response.data);
+                    $("#mainModal").modal('hide');
+                })
+                .catch(function(error) {
+                    alert("Neuspesna izmena!");
+                });
+            }
+            else
+                alert("Nevalidan unos! Sva polja moraju biti popunjena!");
+        },
+
+        deleteVM : function() {
+            var self = this;
+            axios
+            .delete("rest/VirualMachines/deleteVM/" + self.name)
+            .then(response => {
+                this.$emit("deleteList", response.data);
+            });
         },
 
         formToJSON : function() {
@@ -140,6 +210,15 @@ Vue.component("vm_modal", {
             .get("rest/Disks/getIds/" + discSource)
             .then(response => {
                 this.discList = response.data;
+            });
+        },
+
+        getVmDiscs : function(vm) {
+            var self = this;
+            axios
+            .get("rest/VirualMachines/getDiscsIds/" + vm)
+            .then(response => {
+                this.selDiscs = response.data;
             });
         },
          

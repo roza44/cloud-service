@@ -90,5 +90,9 @@ public class VMService {
 	public static void addVM(VirtualnaMasina vm) {
 		virtualMachines.add(vm);
 	}
+	
+	public static void removeVM(VirtualnaMasina vm) {
+		virtualMachines.remove(vm);
+	}
 
 }

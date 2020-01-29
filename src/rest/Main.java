@@ -69,7 +69,10 @@ public class Main {
 		
 		// VIRTUAL MACHINES
 		get("/rest/VirualMachines/getAll", VMController.getAll);
+		get("/rest/VirualMachines/getDiscsIds/:vm", VMController.getDiscsIds);
 		post("/rest/VirualMachines/addVM", VMController.addVM);
+		post("/rest/VirualMachines/changeVM", VMController.changeVM);
+		delete("/rest/VirualMachines/deleteVM/:vm", VMController.deleteVM);
 		
 		// CATEGORIES
 		get("/rest/Categories/getIds", CatController.getIds);
