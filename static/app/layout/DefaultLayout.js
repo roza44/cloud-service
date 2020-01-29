@@ -74,6 +74,9 @@ Vue.component("default_layout", {
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-1" style="position:absolute;left:0;top:0;right:0;bottom:0;padding-top:60px;">
                 <slot></slot>
             </main>
+
+            <org_modal ref="orgModal_nav">
+            </org_modal>
         </div>
         </div>
     </div>
@@ -99,7 +102,7 @@ Vue.component("default_layout", {
         openOrg : function () {
             axios.get("rest/Organizations/" + this.orgName)
             .then(response => {
-                this.$refs.orgModal.show(response.data);
+                this.$refs.orgModal_nav.show(response.data);
             });
         }
 

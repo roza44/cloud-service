@@ -111,12 +111,30 @@ public class OrganizacijaService {
 
 	}
 	
-	public static ArrayList<String> getIds() {
+	public static ArrayList<String> getIds(ArrayList<Organizacija> orgs) {
 		ArrayList<String> ids = new ArrayList<String>();
 		
-		for(Organizacija o : organizacije)
+		for(Organizacija o : orgs)
 			ids.add(o.getIme());
 		
 		return ids;
+	}
+	
+	public static ArrayList<String> getIdsForUsername(String username) {
+		ArrayList<String> ids = new ArrayList<String>();
+		Korisnik k = UserService.getUser(username);
+		
+		for (Organizacija org : organizacije) {
+			if (org == k.getOrganizacija()) {
+				ids.add(org.getIme());
+				break;
+			}
+		}
+		
+		return ids;
+	}
+	
+	public static ArrayList<String> getIds() {
+		return getIds(organizacije);
 	}
 }
