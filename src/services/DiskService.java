@@ -93,8 +93,11 @@ public class DiskService {
 		
 		// Brisanje iz organizacija
 		OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()).obrisiDisk(d);
+		
 		// Brisanje iz VMa
-		d.getVm().obrisiDisk(d);
+		if (d.getVm() != null) {
+			d.getVm().obrisiDisk(d);
+		}
 		
 		// Brisanje samog diska
 		disks.remove(d);

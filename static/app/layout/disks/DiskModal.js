@@ -138,25 +138,60 @@ Vue.component("disk_modal", {
 
         },
 
+        validateInput : function() {
+            if (this.disk.ime === "") {
+                alert("Ime je obavezno polje");
+                return false;
+            }
+            if (this.disk.kapacitet === "") {
+                alert("Kapacitet je obavezno polje");
+                return false;
+            }
+            var kap = parseFloat(this.disk.kapacitet);
+            if (Number.isNaN(kap) || kap <= 0) {
+                alert("Kapacitet mora biti pozitivan broj");
+                return false;
+            }
+            if (this.disk.tip === "") {
+                alert("Tip je obavezno polje");
+                return false;
+            }
+            if (this.disk.organizacija === null) {
+                alert("Organizacija je obavezno polje");
+                return false;
+            }
+            if (this.disk.organizacija.ime === "") {
+                alert("Organizacija je obavezno polje");
+                return false;
+            }
+            return true;
+        },
+
         add : function() {
             var self = this;
-            axios
-            .post("rest/Disks/", self.disk)
-            .then(response => {
-                this.$emit("add", response.data);
-            })
-            .catch(function(error) { alert("Disk sa unetim imenom vec postoji!")});
-            $("#diskModal").modal('hide');
+
+            if (this.validateInput()) {
+                axios
+                .post("rest/Disks/", self.disk)
+                .then(response => {
+                    this.$emit("add", response.data);
+                })
+                .catch(function(error) { alert(error); });
+                $("#diskModal").modal('hide');
+            }
         },
 
         change : function() {
             var self = this;
-            axios
-            .post("rest/Disks/" + self.disk.ime, self.disk)
-            .then(response => {
-                this.$emit("change", response.data);
-            });
-            $("#diskModal").modal('hide');
+
+            if (this.validateInput()) {
+                axios
+                .post("rest/Disks/" + self.disk.ime, self.disk)
+                .then(response => {
+                    this.$emit("change", response.data);
+                });
+                $("#diskModal").modal('hide');
+            }
         },
 
         deleteDisk : function() {
@@ -166,9 +201,7 @@ Vue.component("disk_modal", {
             .then(response => {
                 this.$emit("deleteDisk", response.data);
             })
-            .catch(function(error) {
-                alert("Neuspesno brisanje diska! Disk je u upotrebi!");
-            });
+            .catch(function(error) { alert(error); });
             $("#diskModal").modal('hide');
         }
 
