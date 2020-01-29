@@ -57,6 +57,12 @@ Vue.component("disk_modal", {
                         </select>
                     </div>
 
+                    <div v-else>
+                        <label for="orgViewField">Organizacija</label>
+                            
+                        <input type="text" class="form-control" id="orgViewField" v-model="disk.organizacija.ime" readonly>
+                    </div>
+
                     <div v-if="role === 'user'">
                         <label for="vmViewField">Virtualna mašina</label>
                         

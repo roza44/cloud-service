@@ -51,11 +51,17 @@ public class DiskService {
 		Disk sameName = getDisk(d.getIme());
 		if (sameName != null) throw new exceptions.RecordIDAlreadyTaken("Disk sa unetim imenom vec postoji");
 		
+		// Set dvosmerni vm ref
 		if (d.getVm() != null) {
 			d.setVm(VMService.getVirtualMachine(d.getVm().getIme()));
+			d.getVm().dodajDisk(d);
 		}
-		d.setOrganizacija(OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()));
 		
+		// Set dvosmerni org ref
+		d.setOrganizacija(OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()));
+		d.getOrganizacija().dodajDisk(d);
+		
+		// Dodaj na internu listu
 		disks.add(d);
 		
 		helpers.FileHandler.saveDisks(disks);
@@ -65,9 +71,16 @@ public class DiskService {
 		Disk d = getDisk(newDisk.getIme());
 		if (d == null) throw new exceptions.RecordNotFound("Disk sa unetim imenom ne postoji");
 		
+		// Set stringovi, ne treba prevezivanje
 		d.setKapacitet(newDisk.getKapacitet());
 		d.setTip(newDisk.getTip());
-		d.setVm(newDisk.getVm());
+		
+		// Brisi iz starog vm-a
+		d.getVm().obrisiDisk(d);
+		
+		// Setuj novi vm i dodaj
+		d.setVm(VMService.getVirtualMachine(newDisk.getVm().getIme()));
+		d.getVm().dodajDisk(d);
 		
 		helpers.FileHandler.saveDisks(disks);
 	}
@@ -76,7 +89,12 @@ public class DiskService {
 		Disk d = getDisk(diskIme);
 		if (d == null) throw new exceptions.RecordNotFound("Disk sa unetim imenom ne postoji");
 		
+		// Brisanje iz organizacija
 		OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()).obrisiDisk(d);
+		// Brisanje iz VMa
+		d.getVm().obrisiDisk(d);
+		
+		// Brisanje samog diska
 		disks.remove(d);
 		
 		helpers.FileHandler.saveDisks(disks);
