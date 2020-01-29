@@ -8,15 +8,16 @@ public class VirtualnaMasina {
 	private KategorijaVM kategorija;
 	private Organizacija organizacija;
 	
+	private transient ArrayList<Disk> diskovi;
+	private ArrayList<VMActivity> aktivnosti;
+	
 	public Organizacija getOrganizacija() {
 		return organizacija;
 	}
-
+	
 	public void setOrganizacija(Organizacija organizacija) {
 		this.organizacija = organizacija;
 	}
-	private transient ArrayList<Disk> diskovi;
-	private ArrayList<VMActivity> aktivnosti;
 	
 	private VirtualnaMasina() {
 		this.diskovi = new ArrayList<Disk>();
@@ -43,10 +44,6 @@ public class VirtualnaMasina {
 		this.ime = ime;
 		this.kategorija = kategorija;
 	}
-
-	public void addDisk(Disk d) {
-		diskovi.add(d);
-	}
 	
 	public void addActivity(boolean turnedOn) {
 		this.aktivnosti.add(new VMActivity(turnedOn));
@@ -71,9 +68,13 @@ public class VirtualnaMasina {
 	public ArrayList<Disk> getDiskovi() {
 		return diskovi;
 	}
+	
 	public void dodajDisk(Disk disk) {
 		this.diskovi.add(disk);
 	}
 	
+	public void obrisiDisk(Disk disk) {
+		this.diskovi.remove(disk);
+	}
 
 }

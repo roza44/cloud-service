@@ -43,7 +43,7 @@ public class VMService {
 			for (Disk d : allDisks) {
 				if (d.getVm() == null) continue; // A disk can exist without being part of a vm
 				if (d.getVm().getIme().equals(vm.getIme())) {					
-					vm.addDisk(d);
+					vm.dodajDisk(d);
 					d.setVm(vm);
 				}
 			}
