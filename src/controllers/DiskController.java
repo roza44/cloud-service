@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import model.Disk;
 import services.DiskService;
+import services.VMService;
 import spark.Route;
 
 public class DiskController {
@@ -11,13 +12,20 @@ public class DiskController {
 	
 	public static Route getAll = (req, res) -> {
 		res.type("application/json");
-		return g.toJson(DiskService.getDisks());
+		if (req.session().attribute("role").equals("superadmin")) {
+			return g.toJson(DiskService.getDisks());
+		} else {			
+			return g.toJson(DiskService.getDisks(req.session().attribute("username")));
+		}
 	};
 	
 	public static Route insertOne = (req, res) -> {
 		res.type("application/json");
 		try {
 			Disk d = g.fromJson(req.body(), Disk.class);
+			if (d.getVm() != null) {
+				d.setVm(VMService.getVirtualMachine(d.getVm().getIme()));
+			}
 			DiskService.add(d);
 			return g.toJson(d);
 		} catch (exceptions.RecordIDAlreadyTaken e) {
@@ -30,6 +38,9 @@ public class DiskController {
 		res.type("application/json");
 		try {
 			Disk d = g.fromJson(req.body(), Disk.class);
+			if (d.getVm() != null) {
+				d.setVm(VMService.getVirtualMachine(d.getVm().getIme()));
+			}
 			DiskService.update(d);
 			return g.toJson(DiskService.getDisk(d.getIme()));
 		} catch (exceptions.RecordNotFound e) {
@@ -44,9 +55,6 @@ public class DiskController {
 			DiskService.delete(req.params("ime"));
 			return req.params("ime");
 		} catch (exceptions.RecordNotFound e) {
-			res.status(400);
-			return e.getMessage();
-		} catch (exceptions.RecordIsReferenced e) {
 			res.status(400);
 			return e.getMessage();
 		}

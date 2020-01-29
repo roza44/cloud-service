@@ -54,6 +54,7 @@ public class Main {
 		get("rest/Organizations/getIds", OrganizacijaController.getIds);
 		get("rest/Organizations", OrganizacijaController.getAll);
 		get("rest/Organizations/:ime", OrganizacijaController.getOne);
+		get("rest/Organizations/vms/:ime", OrganizacijaController.getVMs);
 		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
 		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);

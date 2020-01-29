@@ -26,6 +26,10 @@ public class Organizacija {
 		this.diskovi.add(d);
 	}
 
+	public void obrisiDisk(Disk d) {
+		diskovi.remove(d);
+	}
+	
 	private Organizacija() {
 		this.korisnici = new ArrayList<Korisnik>();
 		this.resursi = new ArrayList<VirtualnaMasina>();

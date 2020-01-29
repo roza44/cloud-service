@@ -7,6 +7,7 @@ import exceptions.RecordIsReferenced;
 import exceptions.RecordNotFound;
 import model.Disk;
 import model.KategorijaVM;
+import model.Korisnik;
 import model.Organizacija;
 import model.VirtualnaMasina;
 
@@ -33,6 +34,19 @@ public class DiskService {
 		return disks;
 	}
 	
+	public static ArrayList<Disk> getDisks(String username) {
+		Korisnik k = UserService.getUser(username);
+		Organizacija org = OrganizacijaService.getOrganizacija(k.getOrganizacija().getIme());
+		
+		ArrayList<Disk> ret = new ArrayList<Disk>();
+		for (Disk d : disks) {
+			if (d.getOrganizacija() == org) {
+				ret.add(d);
+			}
+		}
+		return ret;
+	}
+	
 	public static void add(Disk d) throws RecordIDAlreadyTaken {
 		Disk sameName = getDisk(d.getIme());
 		if (sameName != null) throw new exceptions.RecordIDAlreadyTaken("Disk sa unetim imenom vec postoji");
@@ -48,6 +62,7 @@ public class DiskService {
 		
 		d.setKapacitet(newDisk.getKapacitet());
 		d.setTip(newDisk.getTip());
+		d.setVm(newDisk.getVm());
 		
 		helpers.FileHandler.saveDisks(disks);
 	}
@@ -55,8 +70,8 @@ public class DiskService {
 	public static void delete(String diskIme) throws RecordNotFound, RecordIsReferenced {
 		Disk d = getDisk(diskIme);
 		if (d == null) throw new exceptions.RecordNotFound("Disk sa unetim imenom ne postoji");
-		if (d.getVm() != null) throw new exceptions.RecordIsReferenced("Disk pripada virtuelnoj masini");
 		
+		OrganizacijaService.getOrganizacija(d.getOrganizacija().getIme()).obrisiDisk(d);
 		disks.remove(d);
 		helpers.FileHandler.saveDisks(disks);
 		

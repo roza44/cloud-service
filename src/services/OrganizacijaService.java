@@ -61,6 +61,13 @@ public class OrganizacijaService {
 		return organizacije;
 	}
 	
+	public static ArrayList<Organizacija> getOrganizacije(String username) {
+		Korisnik k = UserService.getUser(username);
+		ArrayList<Organizacija> ret = new ArrayList<Organizacija>();
+		ret.add(k.getOrganizacija());
+		return ret;
+	}
+	
 	public static Organizacija getOrganizacija(String ime) {
 		for (Organizacija org : organizacije) {
 			if (org.getIme().equals(ime)) {

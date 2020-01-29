@@ -2,7 +2,8 @@ Vue.component("disk_list", {
 
     data: function() {
         return {
-            disks : []
+            disks : [],
+            role : null
         }
     },
 
@@ -17,19 +18,22 @@ Vue.component("disk_list", {
             <th>Ime</th>
             <th>Tip</th>
             <th>Kapacitet</th>
+            <th>VM</th>
           </tr>
         </thead>
         <tbody v-for="d in disks">
-          <tr id="d.ime" @click="showChange(d)">
+          <tr id="d.ime" @click="showModal(d)">
               <td></td>
               <td>{{d.ime}}</td>
               <td>{{d.tip}}</td>
               <td>{{d.kapacitet}}</td>
+              <td v-if="d.vm">{{d.vm.ime}}</td>
+              <td v-else>/</td>
           </tr>
         </tbody>
       </table>
       
-      <button type="button" class="btn btn-outline-primary btn-lg btn-block" @click="showAdd">
+      <button v-if="role !== 'user'" type="button" class="btn btn-outline-primary btn-lg btn-block" @click="showModal(null)">
       Dodaj disk
       </button>
 
@@ -40,12 +44,13 @@ Vue.component("disk_list", {
     `,
 
     methods: {
-      showAdd : function() {
-        this.$refs.diskRef.show(null);
-      },
-
-      showChange : function(model) {
-        this.$refs.diskRef.show(model);
+      showModal : function(model) {
+        axios
+        .get("rest/Organizations") // Will return only those the current account can see
+        .then(response => {
+          this.$refs.diskRef.show(model, response.data);
+        })
+        .catch(function(error) {alert(error);});
       },
       
       addDisk : function(disk) {
@@ -73,13 +78,15 @@ Vue.component("disk_list", {
       var self = this;
         
       axios
-      .get("rest/Disks/")
+      .get("rest/Disks/") // Only returns disks this account can see
       .then(response => {
           self.disks = response.data;
       })
       .catch(function(error) {
           alert("Failed to read disks");
       });
+
+      this.role = localStorage.getItem('role');
     }
 
 });

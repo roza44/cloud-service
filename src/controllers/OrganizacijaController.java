@@ -13,7 +13,11 @@ public class OrganizacijaController {
 	
 	public static Route getAll = (req, res) -> {
 		res.type("application/json");
-		return g.toJson(OrganizacijaService.getOrganizacije());
+		if (req.session().attribute("role").equals("superadmin")) {
+			return g.toJson(OrganizacijaService.getOrganizacije());
+		} else {			
+			return g.toJson(OrganizacijaService.getOrganizacije(req.session().attribute("username")));
+		}
 	};
 	
 	public static Route getOne = (req, res) -> {
@@ -24,6 +28,17 @@ public class OrganizacijaController {
 			return "Organization not found";
 		} else {
 			return g.toJson(org);
+		}
+	};
+	
+	public static Route getVMs = (req, res) -> {
+		res.type("application/json");
+		Organizacija org = OrganizacijaService.getOrganizacija(req.params(":ime"));
+		if (org == null) {
+			res.status(404);
+			return "Organization not found";
+		} else {
+			return g.toJson(org.getResursi());
 		}
 	};
 	

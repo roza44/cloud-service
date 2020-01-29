@@ -5,10 +5,15 @@ Vue.component("disk_modal", {
             disk : {
                 ime : "",
                 tip : "",
-                kapacitet : ""
+                kapacitet : "",
+                vm : null,
+                organizacija: null
             },
 
-            type : null
+            type : null,
+            organizations : null,
+            virtualMachines : null,
+            role : null
         }
 
     },
@@ -18,8 +23,8 @@ Vue.component("disk_modal", {
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 v-if="type==='add'" class="modal-title" id="exampleModalLabel">Dodavanje diska</h5>
-                <h5 v-if="type==='change'" class="modal-title" id="exampleModalLabel">Izmena diska: {{disk.ime}}</h5>
+                <h5 v-if="type==='add'" class="modal-title" id="exampleModalLabel">Novi disk</h5>
+                <h5 v-if="type==='change'" class="modal-title" id="exampleModalLabel">{{disk.ime}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -28,22 +33,50 @@ Vue.component("disk_modal", {
                 <form>
                     <div v-if="type==='add'" class="form-group">
                         <label for="formGroupExampleInput1">Ime</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput1" v-model="disk.ime">
+
+                        <input v-if="role === 'user'" type="text" class="form-control" id="formGroupExampleInput1" v-model="disk.ime" readonly>
+                        <input v-else type="text" class="form-control" id="formGroupExampleInput1" v-model="disk.ime">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Tip</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" v-model="disk.tip">
+
+                        <input v-if="role === 'user'" type="text" class="form-control" id="formGroupExampleInput2" v-model="disk.tip" readonly>
+                        <input v-else type="text" class="form-control" id="formGroupExampleInput2" v-model="disk.tip">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput3">Kapacitet</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput3" v-model="disk.kapacitet">
+
+                        <input v-if="role === 'user'" type="text" class="form-control" id="formGroupExampleInput3" v-model="disk.kapacitet" readonly>
+                        <input v-else type="text" class="form-control" id="formGroupExampleInput3" v-model="disk.kapacitet">
+                    </div>
+
+                    <div v-if="type === 'add'">
+                        <label for="orgSelectField">Organizacija</label>
+                        <select class="form-control" id="orgSelectField" @change="populateVMs(null)" v-model="disk.organizacija">
+                            <option v-for="org in organizations" :value="org">{{org.ime}}</option>
+                        </select>
+                    </div>
+
+                    <div v-if="role === 'user'">
+                        <label for="vmViewField">Virtualna mašina</label>
+                        
+                        <input v-if="disk.vm == null" type="text" class="form-control" id="vmViewField" readonly>
+                        <input v-else type="text" class="form-control" id="vmViewField" v-model="disk.vm.ime" readonly>
+                    </div>
+
+                    <div v-else>
+                        <label for="vmSelectField">Virtualna mašina</label>
+                        <select class="form-control" id="vmSelectField" v-model="disk.vm">
+                            <option :value="null">/</option>
+                            <option v-for="vm in virtualMachines" :value="vm">{{vm.ime}}</option>
+                        </select>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div v-if="role !== 'user' "class="modal-footer">
                 <button v-if="type==='add'" v-on:click="add" type="button" class="btn btn-primary">Dodaj</button>
                 <button v-if="type==='change'" v-on:click="change" type="button" class="btn btn-primary">Izmeni</button>
-                <button v-if="type==='change'" v-on:click="deleteDisk" type="button" class="btn btn-primary" style="background-color:coral">
+                <button v-if="type==='change' && role === 'superadmin'" v-on:click="deleteDisk" type="button" class="btn btn-primary" style="background-color:coral">
                     Izbrisi disk
                 </button>
             </div>
@@ -53,10 +86,32 @@ Vue.component("disk_modal", {
     
     `,
 
+    mounted() {
+        this.role = localStorage.getItem('role');
+    },
+
     methods: {
-        show : function(model) {
+        show : function(model, organizations) {
             this.fillContent(model);
-            $("#diskModal").modal('show');
+            this.organizations = organizations;
+            this.populateVMs(function() {
+                // then...
+                $("#diskModal").modal('show');
+            });
+        },
+        
+        populateVMs : function(then) {
+            if (!this.disk.organizacija) {
+                // If there's no org (adding a new disk)
+                this.disk.organizacija = this.organizations[0];
+            }
+            axios
+            .get("rest/Organizations/vms/" + this.disk.organizacija.ime)
+            .then(response => {
+                this.virtualMachines = response.data;
+                if (then) then();
+            })
+            .catch(function(error) { alert(error); });
         },
 
         fillContent : function(model) {
@@ -65,7 +120,9 @@ Vue.component("disk_modal", {
                 this.disk = {
                     ime : "",
                     tip : "",
-                    kapacitet : ""
+                    kapacitet : "",
+                    organizacija: null,
+                    vm: null
                 };
             } else {
                 this.type = "change";
