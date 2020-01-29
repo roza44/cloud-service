@@ -19,6 +19,7 @@ Vue.component("disk_list", {
             <th>Tip</th>
             <th>Kapacitet</th>
             <th>VM</th>
+            <th v-if="role === 'superadmin'">Organizacija</th>
           </tr>
         </thead>
         <tbody v-for="d in disks">
@@ -29,6 +30,7 @@ Vue.component("disk_list", {
               <td>{{d.kapacitet}}</td>
               <td v-if="d.vm">{{d.vm.ime}}</td>
               <td v-else>/</td>
+              <td v-if="role === 'superadmin'">{{d.organizacija.ime}}</td>
           </tr>
         </tbody>
       </table>
