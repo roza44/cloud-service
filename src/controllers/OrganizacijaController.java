@@ -49,25 +49,20 @@ public class OrganizacijaController {
 		res.type("application/json");
 		String role = req.session().attribute("role");
 		
-		// Ako nisi superadmin ili admin, zabranjeno
-		if (!(role.equals("superadmin") || role.equals("admin"))) {
-			res.status(403);
-			return "Zabranjen pristup spisku virtualnih masina";
-		}
-		
 		Organizacija org = OrganizacijaService.getOrganizacija(req.params(":ime"));
-		
-		// Ako si admin, smes da vidis samo od svoje organizacije
-		Korisnik k = UserService.getUser(req.session().attribute("username"));
-		if (org != k.getOrganizacija()) {
-			res.status(403);
-			return "Zabranjen pristup spisku virtualnih masina za tudju organizaciju";
-		}
 		
 		if (org == null) {
 			res.status(404);
 			return "Organization not found";
 		} else {
+			if (!role.equals("superadmin")) {			
+				// Smes da vidis samo od svoje organizacije
+				Korisnik k = UserService.getUser(req.session().attribute("username"));
+				if (org != k.getOrganizacija()) {
+					res.status(403);
+					return "Zabranjen pristup spisku virtualnih masina za tudju organizaciju";
+				}
+			}
 			return g.toJson(org.getResursi());
 		}
 	};
