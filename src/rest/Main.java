@@ -48,8 +48,6 @@ public class Main {
 		// Load all data and initialize
 		initDatabase(false);
 		
-		
-		
 		// USERS
 		get("/rest/userInfo", UserController.getInfo);
 		post("/rest/login", UserController.verifyLogin);

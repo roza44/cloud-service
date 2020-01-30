@@ -8,13 +8,20 @@ Vue.component("dashboard", {
 
     template: `
         <default_layout>
-            <vm_list @changeVM="showChange($event)" ref="list"></vm_list>
-            <div class="container-fluid">
-                <button v-if="role==='admin' || role==='superadmin'" v-on:click="showAdd" type="button" class="btn btn-outline-primary btn-lg btn-block">
-                Dodaj virualnu masinu
-                </button>
+            <div class="containter-fluid">
+                <div class="row">
+                    <div class="col-8">
+                        <vm_list @changeVM="showChange($event)" ref="list"></vm_list>
+                        <button v-if="role==='admin' || role==='superadmin'" v-on:click="showAdd" type="button" class="btn btn-outline-primary btn-lg btn-block">
+                        Dodaj virualnu masinu
+                        </button>
+                        <vm_modal @deleteList="deleteList($event)" @changeList="changeList($event)" @addVM="addVM($event)" ref="vmModal"></vm_modal>
+                    </div>
+                    <div class="col-4">
+                        <vm_search @resetVMs="resetVMs" @searchVMs="searchList($event)"></vm_search>
+                    </div>
+                </div>
             </div>
-            <vm_modal @deleteList="deleteList($event)" @changeList="changeList($event)" @addVM="addVM($event)" ref="vmModal"></vm_modal>
         </default_layout>
     `,
 
@@ -38,6 +45,14 @@ Vue.component("dashboard", {
 
         changeList : function(vm) {
             this.$refs.list.change(vm);
+        },
+
+        searchList : function(filter) {
+            this.$refs.list.searchList(filter);
+        },
+        
+        resetVMs : function() {
+            this.$refs.list.resetList();
         }
         
     },

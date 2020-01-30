@@ -19,11 +19,11 @@ Vue.component("disc_search", {
             </div>
             <div class="form-group" style="display:flex">
                 <div style="width:48%">
-                    <label for="lowLimitC">CPU min</label>
+                    <label for="lowLimitC">Kapacitet min</label>
                     <input id="lowLimitC" type="number" class="form-control" v-model="cpuLow">
                 </div>
                 <div style="width:48%">
-                    <label for="highLimitC">CPU max</label>
+                    <label for="highLimitC">Kapacitet max</label>
                     <input id="highLimitC" type="number" class="form-control" v-model="cpuHigh">
                 </div>
             </div>
@@ -53,7 +53,7 @@ Vue.component("disc_search", {
         },
 
         reset : function() {
-
+            this.$emit("reset");
         },
 
         formToJson : function() {

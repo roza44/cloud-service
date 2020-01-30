@@ -41,7 +41,7 @@ Vue.component("disk_list", {
           </button>
         </div>
         <div class="col-4">
-            <disc_search @search="search($event)"></disc_search>
+            <disc_search @reset="resetVue" @search="search($event)"></disc_search>
         </div>
       </div>
       <disk_modal ref="diskRef" @change="changeDisk($event)" @add="addDisk($event)" @deleteDisk="deleteDisk($event)">
@@ -114,6 +114,11 @@ Vue.component("disk_list", {
         
       },
 
+      resetVue : function() {
+        this.reset();
+        this.refreshVue();
+      },
+
       reset : function() {
         this.disks.forEach(element => {element.visible = true});
       },
@@ -129,8 +134,7 @@ Vue.component("disk_list", {
         .get("rest/Disks/") // Only returns disks this account can see
         .then(response => {
             self.disks = response.data;
-            this.reset();
-            this.refreshVue();
+            this.resetVue();
         })
         .catch(function(error) {
             alert("Failed to read disks");
