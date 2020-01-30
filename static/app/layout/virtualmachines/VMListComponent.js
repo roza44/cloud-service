@@ -75,7 +75,7 @@ Vue.component("vm_list", {
             self.vm_list = response.data;
         })
         .catch(function(error) {
-            alert("Failed to read virtual machines");
+            alert(error.response.data);
         });
 
     }

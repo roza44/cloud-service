@@ -19,6 +19,15 @@ public class VMController {
 	
 	private static Gson g = new Gson();
 	
+	private static String validate(VmToAdd v) {
+		if (v.ime == null) return "Ime je obavezno polje";
+		if (v.ime.equals("")) return "Ime je obavezno polje";
+		if (v.kategorija == null) return "Organizacija je obavezno polje";
+		if (v.organizacija == null) return "Organizacija je obavezno polje";
+		if (v.diskovi == null) return "Diskovi su obavezno polje, moze i prazna lista";
+		return null;
+	}
+	
 	public static Route getAll = (req, res) -> {
 		res.type("application/json");
 		
@@ -33,7 +42,19 @@ public class VMController {
 	
 	public static Route addVM = (req, res) -> {
 		res.type("application/json");
-		VmToAdd vmInfo = g.fromJson(req.body(), VmToAdd.class);
+		VmToAdd vmInfo;
+		try {			
+			vmInfo = g.fromJson(req.body(), VmToAdd.class);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
+		String result = validate(vmInfo);
+		if (result != null) {
+			res.status(400);
+			return result;
+		}
 		
 		if(VMService.contains(vmInfo.ime)) {
 			res.status(400);
@@ -75,6 +96,11 @@ public class VMController {
 	public static Route getDiscsIds = (req,res) -> {
 		res.type("application/json");
 		
+		if (req.params(":vm") == null) {
+			res.status(400);
+			return "Query parametar 'vm' nedostaje";
+		}
+		
 		ArrayList<String> ids = new ArrayList<String>();
 		for(Disk d : VMService.getVirtualMachine(req.params(":vm")).getDiskovi())
 			ids.add(d.getIme());
@@ -85,7 +111,19 @@ public class VMController {
 	public static Route changeVM = (req, res) -> {
 		res.type("application/json");
 		
-		VmToAdd vmInfo = g.fromJson(req.body(), VmToAdd.class);
+		VmToAdd vmInfo;
+		try {			
+			vmInfo = g.fromJson(req.body(), VmToAdd.class);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
+		String result = validate(vmInfo);
+		if (result != null) {
+			res.status(400);
+			return result;
+		}
 		
 		VirtualnaMasina vm = VMService.getVirtualMachine(vmInfo.ime);
 		
@@ -107,6 +145,11 @@ public class VMController {
 	
 	public static Route deleteVM = (req, res) -> {
 		res.type("application/json");
+		
+		if (req.params(":vm") == null) {
+			res.status(400);
+			return "Query parametar 'vm' nedostaje";
+		}
 		
 		VirtualnaMasina vm = VMService.getVirtualMachine(req.params(":vm"));
 		

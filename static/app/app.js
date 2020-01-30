@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
   var self = this;
   var ei;
   axios
-  .get("rest/Users/info")
+  .get("rest/userInfo")
   .then(response => {
     
     ei = response.data;
@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
     else 
       next(from.path);
   })
-  .catch(function(error){alert(error);});
+  .catch(function(error){alert(error.response.data);});
 
 })
 

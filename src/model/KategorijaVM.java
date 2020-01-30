@@ -8,6 +8,9 @@ public class KategorijaVM {
 	private int gpuJezgra;
 	
 	public KategorijaVM() {
+		brojJezgara = 0;
+		ram = 0;
+		gpuJezgra = 0;
 	}
 	
 	public KategorijaVM(String ime, int brojJezgara, double ram, int gpuJezgra) {

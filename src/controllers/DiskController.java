@@ -28,8 +28,10 @@ public class DiskController {
 	};
 	
 	private static String validate(Disk d) {
+		if (d.getIme() == null) return "Ime je obavezno polje";
 		if (d.getIme().equals("")) return "Ime je obavezno polje";
-		if (d.getKapacitet() == -1) return "Kapacitet je obavezno polje";
+		if (d.getKapacitet() == 0) return "Kapacitet je obavezno polje";
+		if (d.getTip() == null) return "Tip je obavezno polje";
 		if (d.getTip().equals("")) return "Tip je obavezno polje";
 		if (d.getOrganizacija() == null) return "Organizacija je obavezno polje";
 		if (d.getOrganizacija().getIme() == null || d.getOrganizacija().getOpis() == null) return "Organizacija vezana za disk korumpirana"; 
@@ -62,7 +64,13 @@ public class DiskController {
 	public static Route insertOne = (req, res) -> {
 		res.type("application/json");
 		
-		Disk d = g.fromJson(req.body(), Disk.class);
+		Disk d;
+		try {
+			d = g.fromJson(req.body(), Disk.class);
+		} catch(Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
 		
 		
 		try {
@@ -92,8 +100,19 @@ public class DiskController {
 	
 	public static Route updateOne = (req, res) -> {
 		res.type("application/json");
-		Disk d = g.fromJson(req.body(), Disk.class);
 		
+		if (req.params("ime") == null) {
+			res.status(400);
+			return "Query parametar 'ime' nedostaje";
+		}
+		
+		Disk d;
+		try {
+			d = g.fromJson(req.body(), Disk.class);
+		} catch(Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
 		try {
 			// Validacija
 			String validateResult = validate(d);
@@ -121,6 +140,11 @@ public class DiskController {
 	public static Route deleteOne = (req, res) -> {
 		res.type("application/json");
 		
+		if (req.params("ime") == null) {
+			res.status(400);
+			return "Query parametar 'ime' nedostaje";
+		}
+		
 		// Samo superadmin sme
 		if (!req.session().attribute("role").equals("superadmin")) {
 			res.status(403);
@@ -139,10 +163,16 @@ public class DiskController {
 	public static Route getIds = (req, res) -> {
 		res.type("application/json");
 		
+		if (req.params(":organization") == null) {
+			res.status(400);
+			return "Query parametar 'organization' nedostaje";
+		}
+		
 		String param = req.params(":organization");
 		ArrayList<String> retVal = new ArrayList<String>();
 		Session s = req.session(false);
 		
+		// Kontrola pristupa
 		if(s.attribute("role").equals("admin"))
 			retVal = extractIds(UserService.getUser(s.attribute("username")).getOrganizacija().getDiskovi());
 		else
@@ -152,7 +182,6 @@ public class DiskController {
 	};
 	
 	private static ArrayList<String> extractIds(ArrayList<Disk> diskovi) {
-		
 		ArrayList<String> retVal = new ArrayList<String>();
 		
 		for(Disk d : diskovi)

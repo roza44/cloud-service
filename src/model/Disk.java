@@ -9,7 +9,9 @@ public class Disk {
 	private VirtualnaMasina vm;
 	private Organizacija organizacija;
 	
-
+	public Disk() {
+		kapacitet = 0;
+	}
 	public Disk(String ime, String tip, double kapacitet, VirtualnaMasina vm, Organizacija org) {
 		super();
 		this.ime = ime;

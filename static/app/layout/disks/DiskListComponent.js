@@ -57,7 +57,7 @@ Vue.component("disk_list", {
         .then(response => {
           this.$refs.diskRef.show(model, response.data);
         })
-        .catch(function(error) {alert(error);});
+        .catch(function(error) {alert(error.response.data);});
       },
       
       addDisk : function(disk) {

@@ -32,7 +32,7 @@ Vue.component("login", {
                 //Koriscenje this u .then pozivu nije preporucljivo i zato kreiramo self
                 self = this;
                 axios
-                .post("rest/Users/login", {"username": this.username, "password": this.password})
+                .post("rest/login", {"username": this.username, "password": this.password})
                 .then(response => {self.$router.push("/dashboard")})
                 .catch(function(error){alert("Invalid username or password")});
             }

@@ -15,6 +15,8 @@ import services.DiskService;
 import services.OrganizacijaService;
 import services.UserService;
 import services.VMService;
+import spark.Filter;
+import spark.Route;
 
 public class Main {
 
@@ -31,6 +33,13 @@ public class Main {
 		OrganizacijaService.initialize(testMode);
 	}
 	
+	static Filter authCheck = (req, res) -> {
+		if (req.session(false) == null) {
+			halt(401, "Prvo se prijavite");
+		}
+		
+	};
+	
 	public static void main(String[] args) throws IOException {
 		port(8080);
 		
@@ -39,27 +48,33 @@ public class Main {
 		// Load all data and initialize
 		initDatabase(false);
 		
+		
+		
 		// USERS
-		post("/rest/Users/login", UserController.verifyLogin);
-		get("/rest/Users/info", UserController.getInfo);
+		get("/rest/userInfo", UserController.getInfo);
+		post("/rest/login", UserController.verifyLogin);
+		
+		before("/rest/Users/*", authCheck);
 		get("/rest/Users/getAll", UserController.getAll);
 		get("/rest/Users/logout", UserController.logout);
 		get("/rest/Users/getUser/:username", UserController.getUser);
 		post("/rest/Users/addUser/:organization", UserController.addUser);
 		post("/rest/Users/changeUser/:organization", UserController.changeUser);
-		post("/rest/Users/deleteUser", UserController.deleteUser);
+		post("/rest/Users/deleteUser/:email", UserController.deleteUser);
 		post("/rest/Users/updateProfile", UserController.updateProfile);
 		
 		// ORGANIZATIONS
+		before("rest/Organizations/*", authCheck);
 		get("rest/Organizations/getIds", OrganizacijaController.getIds);
 		get("rest/Organizations", OrganizacijaController.getAll);
 		get("rest/Organizations/:ime", OrganizacijaController.getOne);
 		get("rest/Organizations/vms/:ime", OrganizacijaController.getVMs);
 		post("rest/Organizations/", OrganizacijaController.insertOne);
-		post("rest/Organizations/:ime", OrganizacijaController.updateOne);
+		post("rest/Organizations/:organization", OrganizacijaController.updateOne);
 		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);
 		
 		// DISKS
+		before("rest/Disks/*", authCheck);
 		get("rest/Disks/getIds/:organization", DiskController.getIds);
 		get("rest/Disks/", DiskController.getAll);
 		post("rest/Disks/", DiskController.insertOne);
@@ -67,6 +82,7 @@ public class Main {
 		delete("rest/Disks/:ime", DiskController.deleteOne);
 		
 		// VIRTUAL MACHINES
+		before("/rest/VirualMachines/*", authCheck);
 		get("/rest/VirualMachines/getAll", VMController.getAll);
 		get("/rest/VirualMachines/getDiscsIds/:vm", VMController.getDiscsIds);
 		post("/rest/VirualMachines/addVM", VMController.addVM);
@@ -74,6 +90,7 @@ public class Main {
 		delete("/rest/VirualMachines/deleteVM/:vm", VMController.deleteVM);
 		
 		// CATEGORIES
+		before("/rest/Categories/*", authCheck);
 		get("/rest/Categories/getIds", CatController.getIds);
 		get("/rest/Categories/getAll", CatController.getAll);
 		post("/rest/Categories/addCat", CatController.addCat);

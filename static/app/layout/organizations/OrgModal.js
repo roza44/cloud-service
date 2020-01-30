@@ -95,7 +95,7 @@ Vue.component("org_modal", {
                         self.emitEventAndClose(response.data);
                     }
                 })
-                .catch(function(error) {alert(error);});
+                .catch(function(error) {alert(error.response.data);});
             }
         },
 

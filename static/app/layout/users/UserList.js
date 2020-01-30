@@ -85,7 +85,7 @@ Vue.component("user_list", {
           self.user_list = response.data;
       })
       .catch(function(error) {
-          alert("Failed to read users");
+          alert(error.response.data);
       });
     }
 

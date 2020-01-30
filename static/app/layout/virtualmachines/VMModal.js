@@ -148,7 +148,7 @@ Vue.component("vm_modal", {
                     $("#mainModal").modal('hide');
                 })
                 .catch(function(error) {
-                    alert("Virutalna masina sa zadatim imenom vec postoji!");
+                    alert(error.response.data);
                 });
             }
             else  
@@ -165,7 +165,7 @@ Vue.component("vm_modal", {
                     $("#mainModal").modal('hide');
                 })
                 .catch(function(error) {
-                    alert("Neuspesna izmena!");
+                    alert(error.response.data);
                 });
             }
             else

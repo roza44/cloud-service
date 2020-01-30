@@ -80,7 +80,7 @@ Vue.component("cat_list", {
           self.cat_list = response.data;
       })
       .catch(function(error) {
-          alert("Failed to read categories");
+          alert(error.response.data);
       });
     }
 

@@ -17,9 +17,36 @@ public class UserController {
 	
 	private static Gson g = new Gson();
 	
+	private static String validate(Korisnik k) {
+		if (k.getEmail() == null) return "E-mail je obavezno polje";
+		if (k.getEmail().equals("")) return "E-mail je obavezno polje";
+		
+		if (k.getIme() == null) return "Ime je obavezno polje";
+		if (k.getIme().equals("")) return "Ime je obavezno polje";
+		
+		if (k.getLozinka() == null) return "Lozinka je obavezno polje";
+		if (k.getLozinka().equals("")) return "Lozinka je obavezno polje";
+		
+		if (k.getPrezime() == null) return "Prezime je obavezno polje";
+		if (k.getPrezime().equals("")) return "Prezime je obavezno polje";
+		
+		if (k.getUloga() == null) return "Uloga je obavezno polje";
+		if (!(k.getUloga().equals("user") || k.getUloga().equals("admin") || k.getUloga().equals("superadmin"))) return "Uloga mora biti 'user', 'admin' ili 'superadmin'";
+		
+		return null;
+	}
+	
 	public static Route verifyLogin = (req,res) -> {
 		res.type("application/json");
-		LoginInfo li = g.fromJson(req.body(), LoginInfo.class);
+		
+		LoginInfo li;
+		try {
+			li = g.fromJson(req.body(), LoginInfo.class);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
 		if(UserService.checkLogin(li.username, li.password)) {
 			Korisnik k = UserService.getUser(li.username);
 			req.session(true).attribute("role", k.getUloga());
@@ -28,7 +55,7 @@ public class UserController {
 			
 			return "OK";
 		} else {
-			res.status(400);
+			res.status(403);
 			return "Invalid username or password!";
 		}
 	};
@@ -66,19 +93,49 @@ public class UserController {
 	
 	public static Route getUser = (req, res) -> {
 		res.type("application/json");
-		Korisnik k = UserService.getUser(req.params(":username"));
+		if (req.params(":username") == null) {
+			res.status(400);
+			return "Query parametar 'username' nedostaje";
+		}
+		
+		Korisnik k;
+		if (req.session().attribute("role").equals("superadmin")) {
+			k = UserService.getUser(req.params(":username"));	
+		} else {
+			k = UserService.getUser(req.session().attribute("username"));
+		}
 		return g.toJson(k);
 	};
 	
 	public static Route logout = (req,res) -> {
 		res.type("application/json");
+		
 		req.session(false).invalidate();
 		return g.toJson("Succssesfull logout!");
 	};
 	
 	public static Route addUser = (req, res) -> {
 		res.type("application/json");
-		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		
+		if (req.params(":organization") == null) {
+			res.status(400);
+			return "Query parametar 'organization' nedostaje";
+		}
+		
+		Korisnik k;
+		try {			
+			k = g.fromJson(req.body(), Korisnik.class);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
+		String result = validate(k);
+		if (result != null) {
+			res.status(400);
+			return result;
+		}
+		
 		if(UserService.containsUser(k)) {
 			res.status(400);
 			return g.toJson("Korisnik sa unetim email-om vec postoji!");
@@ -113,7 +170,27 @@ public class UserController {
 	
 	public static Route changeUser = (req, res) -> {
 		res.type("application/json");
-		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		
+		if (req.params(":organization") == null) {
+			res.status(400);
+			return "Query parametar 'organization' nedostaje";
+		}
+		
+		Korisnik k;
+		try {			
+			k = g.fromJson(req.body(), Korisnik.class);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
+		// Validacija
+		String result = validate(k);
+		if (result != null) {
+			res.status(400);
+			return result;
+		}
+		
 		Korisnik uk = UserService.updateUser(k.getEmail(), k); // updateUser vraca updateovanog usera
 		
 		if(req.session(false).attribute("role").equals("superadmin")) {
@@ -132,7 +209,18 @@ public class UserController {
 	
 	public static Route deleteUser = (req, res) -> {
 		res.type("application/json");
-		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		
+		if (req.params(":email") == null) {
+			res.status(400);
+			return "Query parametar 'email' nedostaje";
+		}
+		
+		Korisnik k = UserService.getUser(req.params(":email"));
+		
+		if (k == null) {
+			res.status(404);
+			return "Korisnik nije pronadjen";
+		}
 		
 		Korisnik realK = UserService.deleteUser(k);
 		realK.getOrganizacija().removeUser(realK);
@@ -145,7 +233,20 @@ public class UserController {
 	
 	public static Route updateProfile = (req, res) -> {
 		res.type("application/json");
-		Korisnik k = g.fromJson(req.body(), Korisnik.class);
+		Korisnik k;
+		try {			
+			k = g.fromJson(req.body(), Korisnik.class);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
+		String result = validate(k);
+		if (result != null) {
+			res.status(400);
+			return result;
+		}
+		
 		Korisnik uk = UserService.updateUser(k.getEmail(), k);
 		
 		//Save changes

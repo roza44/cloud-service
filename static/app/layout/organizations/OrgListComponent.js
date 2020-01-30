@@ -46,7 +46,7 @@ Vue.component("org_list", {
             .then(response => {
                 this.organizations = response.data;
             })
-            .catch(function(error){alert(error);});
+            .catch(function(error){alert(error.response.data);});
         },
 
         editOrg: function(org) {
