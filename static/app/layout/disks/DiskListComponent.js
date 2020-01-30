@@ -52,7 +52,7 @@ Vue.component("disk_list", {
         .then(response => {
           this.$refs.diskRef.show(model, response.data);
         })
-        .catch(function(error) {alert(error);});
+        .catch(function(error) {alert(error.response.data);});
       },
       
       addDisk : function(disk) {
@@ -85,7 +85,7 @@ Vue.component("disk_list", {
           self.disks = response.data;
       })
       .catch(function(error) {
-          alert("Failed to read disks");
+          alert(error.response.data);
       });
 
       this.role = localStorage.getItem('role');

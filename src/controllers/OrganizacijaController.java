@@ -28,6 +28,11 @@ public class OrganizacijaController {
 		res.type("application/json");
 		Organizacija org;
 		
+		if (req.params(":ime") == null) {
+			res.status(400);
+			return "Query parametar 'ime' nedostaje";
+		}
+		
 		if (req.session().attribute("role").equals("superadmin")) {
 			// Smes koju god da vidis
 			org = OrganizacijaService.getOrganizacija(req.params(":ime"));
@@ -47,6 +52,12 @@ public class OrganizacijaController {
 	
 	public static Route getVMs = (req, res) -> {
 		res.type("application/json");
+		
+		if (req.params(":ime") == null) {
+			res.status(400);
+			return "Query parametar 'ime' nedostaje";
+		}
+		
 		String role = req.session().attribute("role");
 		
 		Organizacija org = OrganizacijaService.getOrganizacija(req.params(":ime"));
@@ -79,8 +90,13 @@ public class OrganizacijaController {
 			res.status(403);
 			return "Organizacije sme da dodaje samo superadmin";
 		}
-		
-		Organizacija org = g.fromJson(req.body(), Organizacija.class);
+		Organizacija org;
+		try {
+			org = g.fromJson(req.body(), Organizacija.class);
+		} catch(Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
 		
 		// Validacija
 		String validateResult = validate(org);
@@ -95,6 +111,9 @@ public class OrganizacijaController {
 		} catch (exceptions.RecordIDAlreadyTaken e) {
 			res.status(400);
 			return "Organizacija s prosledjenim imenom vec postoji!";
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
 		}
 		
 		return g.toJson(OrganizacijaService.getOrganizacija(org.getIme()));
@@ -103,7 +122,13 @@ public class OrganizacijaController {
 	public static Route updateOne = (req, res) -> {
 		res.type("application/json");
 		
-		Organizacija org = g.fromJson(req.body(), Organizacija.class);
+		Organizacija org;
+		try {
+			org = g.fromJson(req.body(), Organizacija.class);
+		} catch(Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
 		
 		String role = req.session().attribute("role");
 		// Samo superadmin ili admin te organizacije
@@ -133,13 +158,21 @@ public class OrganizacijaController {
 		} catch (exceptions.RecordNotFound e) {
 			res.status(404);
 			return "Organization not found!";
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
 		}
-		
 		return g.toJson(OrganizacijaService.getOrganizacija(org.getIme()));
 	};
 	
 	public static Route setImage = (req, res) -> {
 		res.type("application/json");
+		
+		if (req.params("fileName") == null) {
+			res.status(400);
+			return "Query parametar 'fileName' nedostaje";
+		}
+		
 		String fileName = req.params("fileName");
 		String extension = fileName.split("\\.")[1];
 		String orgName = req.params("ime");
@@ -166,6 +199,9 @@ public class OrganizacijaController {
 		} catch (exceptions.RecordNotFound e) {			
 			res.status(404);
 			return "Organization not found!";
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
 		}
 
 		return g.toJson(OrganizacijaService.getOrganizacija(orgName));

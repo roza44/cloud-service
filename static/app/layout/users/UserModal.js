@@ -118,7 +118,7 @@ Vue.component("user_modal", {
                 .then(response => {
                     this.$emit("addUser", response.data);
                 })
-                .catch(function(error) { alert("Korisnik sa unetim email-om vec postoji!")});
+                .catch(function(error) { alert(error.response.data)});
                 $("#exampleModal").modal('hide');
             }
         },
@@ -143,12 +143,12 @@ Vue.component("user_modal", {
         deleteUser : function() {
             var self = this;
             axios
-            .post("rest/Users/deleteUser", {"email" : self.email, "ime" : self.name, "prezime" : self.secondname, "lozinka" : this.password})
+            .post("rest/Users/deleteUser/" + this.email)
             .then(response => {
                 this.$emit("deleteUser", response.data);
             })
             .catch(function(error) {
-                alert("Neuspesno brisanje korisnika!");
+                alert(error.response.data);
             });
             $("#exampleModal").modal('hide');
         },
@@ -174,7 +174,7 @@ Vue.component("user_modal", {
                 self.orgIds = response.data; 
             })
             .catch( function(error) {
-                alert("Neuspesno dobavljanje id organizacija!");
+                alert(error.response.data);
             });
         }
     }

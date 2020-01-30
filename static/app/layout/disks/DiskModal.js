@@ -118,7 +118,7 @@ Vue.component("disk_modal", {
                 this.virtualMachines = response.data;
                 if (then) then();
             })
-            .catch(function(error) { alert(error); });
+            .catch(function(error) { alert(error.response.data); });
         },
 
         fillContent : function(model) {
@@ -176,7 +176,7 @@ Vue.component("disk_modal", {
                 .then(response => {
                     this.$emit("add", response.data);
                 })
-                .catch(function(error) { alert(error); });
+                .catch(function(error) { alert(error.response.data); });
                 $("#diskModal").modal('hide');
             }
         },
@@ -201,7 +201,7 @@ Vue.component("disk_modal", {
             .then(response => {
                 this.$emit("deleteDisk", response.data);
             })
-            .catch(function(error) { alert(error); });
+            .catch(function(error) { alert(error.response.data); });
             $("#diskModal").modal('hide');
         }
 

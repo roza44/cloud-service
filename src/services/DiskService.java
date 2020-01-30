@@ -81,8 +81,10 @@ public class DiskService {
 		}
 		
 		// Setuj novi vm i dodaj
-		d.setVm(VMService.getVirtualMachine(newDisk.getVm().getIme()));
-		d.getVm().dodajDisk(d);
+		if (newDisk.getVm() != null) {		
+			d.setVm(VMService.getVirtualMachine(newDisk.getVm().getIme()));
+			d.getVm().dodajDisk(d);
+		}
 		
 		helpers.FileHandler.saveDisks(disks);
 	}

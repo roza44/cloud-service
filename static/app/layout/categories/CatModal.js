@@ -115,7 +115,7 @@ Vue.component("cat_modal", {
                 this.$emit("deleteCat", response.data);
             })
             .catch(function(error) {
-                alert("Neuspesno brisanje kategorije! Kategorija je u upotrebi!");
+                alert(error.response.data);
             });
             $("#catModal").modal('hide');
         },

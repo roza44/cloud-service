@@ -96,7 +96,7 @@ Vue.component("default_layout", {
             .then(response  => {
                 this.$router.push("/");
             })
-            .catch(function(error){alert(error);})
+            .catch(function(error){alert(error.response.data);})
         },
 
         openOrg : function () {
