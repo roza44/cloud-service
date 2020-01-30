@@ -9,13 +9,13 @@ const disks = {template: '<disks></disks>'}
 const router = new VueRouter({
     mode: 'hash',
     routes: [
-      { path: '/', component: login},
-      { path: '/dashboard', component: dashboard},
-      { path: '/users', component: users },
-      { path: '/categories', component: categories},
-      { path: '/organizations', component: organizations},
-      { path: '/profile', component: profile},
-      { path: '/disks', component: disks}
+      { path: '/', component: login, meta: {allow : ['user', 'admin', 'superadmin']}},
+      { path: '/dashboard', component: dashboard, meta: {allow : ['user', 'admin', 'superadmin']}},
+      { path: '/users', component: users, meta: {allow : ['admin', 'superadmin']}},
+      { path: '/categories', component: categories, meta: {allow : ['superadmin']}},
+      { path: '/organizations', component: organizations, meta: {allow : ['admin', 'superadmin']}},
+      { path: '/profile', component: profile, meta: {allow : ['user', 'admin', 'superadmin']}},
+      { path: '/disks', component: disks, meta: {allow : ['user', 'admin', 'superadmin']}}
     ]
 });
 
@@ -29,16 +29,23 @@ router.beforeEach((to, from, next) => {
   .then(response => {
     
     ei = response.data;
-    if(!ei.isLogedIn && to.path !== "/") {
-      next("/");
+    if(!ei.isLogedIn) {
+      if(to.path === "/")
+        next();
+      else
+        next("/");
     }
-    else
+    else if(to.path === "/")
+      next(from.path);
+    else if(to.meta.allow.includes(ei.role))
     {
       localStorage.setItem("role", ei.role);
       localStorage.setItem("username", ei.username);
       localStorage.setItem("orgName", ei.orgName);
       next();
     }
+    else 
+      next(from.path);
   })
   .catch(function(error){alert(error);});
 

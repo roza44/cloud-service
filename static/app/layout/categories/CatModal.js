@@ -30,15 +30,15 @@ Vue.component("cat_modal", {
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Broj CPU jezgara</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" v-model="cpu">
+                        <input type="number" class="form-control" id="formGroupExampleInput2" v-model="cpu">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput3">RAM</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput3" v-model="ram">
+                        <input type="number" class="form-control" id="formGroupExampleInput3" v-model="ram">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput4">Broj GPU jezgara</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput4" v-model="gpu">
+                        <input type="number" class="form-control" id="formGroupExampleInput4" v-model="gpu">
                     </div>
                 </form>
             </div>
