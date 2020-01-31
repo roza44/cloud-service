@@ -1,9 +1,15 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import exceptions.RecordNotFound;
+import gson_classes.MBRequest;
 import model.Korisnik;
 import model.Organizacija;
 import services.OrganizacijaService;
@@ -22,6 +28,44 @@ public class OrganizacijaController {
 			// Smes samo svoju da vidis
 			return g.toJson(OrganizacijaService.getOrganizacije(req.session().attribute("username")));
 		}
+	};
+	
+	public static Route getMonthlyBill = (req, res) -> {
+		res.type("application/json");
+		
+		MBRequest mbr;
+		Date from, to;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			mbr = g.fromJson(req.body(), MBRequest.class);
+			from = sdf.parse(mbr.from);
+			to = sdf.parse(mbr.to);
+		} catch (Exception e) {
+			res.status(400);
+			return "Los format zahteva";
+		}
+		
+		if (mbr.from == null) {
+			res.status(400);
+			return "Početni datum je obavezno polje";
+		}
+		
+		if (mbr.to == null) {
+			res.status(400);
+			return "Krajnji datum je obavezno polje";
+		}
+		
+
+		HashMap<String, Double> bill;
+		Organizacija org = UserService.getUser(req.session().attribute("username")).getOrganizacija();
+		try {			
+			bill = OrganizacijaService.calculateMonthlyBill(org, from, to);
+		} catch (RecordNotFound e) {
+			res.status(400);
+			return e.getMessage();
+		}
+		
+		return g.toJson(bill);
 	};
 	
 	public static Route getOne = (req, res) -> {

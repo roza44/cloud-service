@@ -5,6 +5,7 @@ const organizations = {template : '<organizations></organizations>'}
 const categories = {template: '<categories></categories>'}
 const profile = {template: '<profile></profile>'}
 const disks = {template: '<disks></disks>'}
+const monthlyBill = {template: '<monthlyBill></monthlyBill>'}
 
 const router = new VueRouter({
     mode: 'hash',
@@ -15,7 +16,8 @@ const router = new VueRouter({
       { path: '/categories', component: categories, meta: {allow : ['superadmin']}},
       { path: '/organizations', component: organizations, meta: {allow : ['admin', 'superadmin']}},
       { path: '/profile', component: profile, meta: {allow : ['user', 'admin', 'superadmin']}},
-      { path: '/disks', component: disks, meta: {allow : ['user', 'admin', 'superadmin']}}
+      { path: '/disks', component: disks, meta: {allow : ['user', 'admin', 'superadmin']}},
+      { path: '/monthlyBill', component: monthlyBill, meta: {allow : ['admin']}}
     ]
 });
 

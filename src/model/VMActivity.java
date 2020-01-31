@@ -10,4 +10,9 @@ public class VMActivity {
 		this.timestamp = new Date();
 		this.turnedOn = turnedOn;
 	}
+	
+	public VMActivity(boolean turnedOn, Date timestamp) {
+		this.timestamp = timestamp;
+		this.turnedOn = turnedOn;
+	}
 }

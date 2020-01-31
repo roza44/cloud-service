@@ -19,7 +19,6 @@ public class VMService {
 		vm1.setOrganizacija(new Organizacija("Org1", "Opis1"));
 		virtualMachines.add(vm1);
 		
-		
 		VirtualnaMasina vm2 = new VirtualnaMasina("VM2", new KategorijaVM("Kat2", 8, 20, 128));
 		vm2.setOrganizacija(new Organizacija("Org2", "Opis1"));
 		virtualMachines.add(vm2);

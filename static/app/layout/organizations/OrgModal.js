@@ -83,7 +83,7 @@ Vue.component("org_modal", {
                     // Image
                     if (self.slikaFile) {
                         // Upload image
-                        axios.post( '/rest/setOrgImage/' + self.org.ime + "/" + self.slikaFile.name, self.slikaFile)
+                        axios.post( '/rest/Organizations/setImage/' + self.org.ime + "/" + self.slikaFile.name, self.slikaFile)
                         .then(res => {
                             self.slikaFile = null;
                             self.emitEventAndClose(res.data);

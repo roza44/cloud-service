@@ -4,12 +4,24 @@ import static spark.Spark.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import controllers.CatController;
 import controllers.DiskController;
 import controllers.OrganizacijaController;
 import controllers.UserController;
 import controllers.VMController;
+import gson_classes.MBRequest;
+import model.KategorijaVM;
+import model.Organizacija;
+import model.VMActivity;
+import model.VirtualnaMasina;
 import services.CatService;
 import services.DiskService;
 import services.OrganizacijaService;
@@ -40,13 +52,28 @@ public class Main {
 		
 	};
 	
+	static void monthlyBillTest() {
+		VirtualnaMasina vm1 = new VirtualnaMasina("VM1", new KategorijaVM("Kat1", 4, 8.5, 32));
+		vm1.setOrganizacija(new Organizacija("Org1", "Opis1"));
+		vm1.addActivity(true, new Date(2020, 1, 10, 12, 0));
+		vm1.addActivity(false, new Date(2020, 1, 10, 15, 0));
+		vm1.addActivity(true, new Date(2020, 1, 10, 16, 0));
+		vm1.addActivity(false, new Date(2020, 1, 11, 9, 0));
+		vm1.addActivity(true, new Date(2020, 1, 11, 11, 0));
+		
+		Date from = new Date(2020, 1, 11, 7, 0);
+		Date to = new Date(2020, 1, 11, 12, 0);
+		System.out.println(vm1.getActiveHours(from, to));
+		
+	}
+	
+	
 	public static void main(String[] args) throws IOException {
 		port(8080);
-		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
 		// Load all data and initialize
-		initDatabase(false);
+		initDatabase(false/* Simulation mode flag */);
 		
 		// USERS
 		get("/rest/userInfo", UserController.getInfo);
@@ -67,9 +94,10 @@ public class Main {
 		get("rest/Organizations", OrganizacijaController.getAll);
 		get("rest/Organizations/:ime", OrganizacijaController.getOne);
 		get("rest/Organizations/vms/:ime", OrganizacijaController.getVMs);
+		post("rest/Organizations/monthlyBill", OrganizacijaController.getMonthlyBill);
 		post("rest/Organizations/", OrganizacijaController.insertOne);
 		post("rest/Organizations/:organization", OrganizacijaController.updateOne);
-		post("rest/setOrgImage/:ime/:fileName", OrganizacijaController.setImage);
+		post("rest/Organizations/setImage/:ime/:fileName", OrganizacijaController.setImage);
 		
 		// DISKS
 		before("rest/Disks/*", authCheck);
