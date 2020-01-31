@@ -15,7 +15,7 @@ public class UserService {
 		users = new ArrayList<Korisnik>();
 		
 		users.add(new Korisnik("roza44", "pass", "Joca", "Boca", new Organizacija("Org1", "opis1"), "admin"));
-		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", new Organizacija("Org2", "opis2"), "superadmin"));
+		users.add(new Korisnik("stegnuti", "pass", "Stefko", "Stegko", new Organizacija("CSService", "opis2"), "superadmin"));
 		
 		helpers.FileHandler.saveUsers(users);
 		///
@@ -70,6 +70,7 @@ public class UserService {
 		k.setIme(newUser.getIme());
 		k.setPrezime(newUser.getPrezime());
 		k.setLozinka(newUser.getLozinka());
+		k.setUloga(newUser.getUloga());
 		return k;
 	}
 	

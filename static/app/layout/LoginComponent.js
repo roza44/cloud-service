@@ -10,7 +10,7 @@ Vue.component("login", {
     template: `
     <body class="text-center">
     <form class="form-signin">
-      <img class="mb-4" src="../data/empty_cloud.png" alt="" width="120" height="120">
+      <img class="mb-4" src="/data/cloud.png" alt="" width="240" height="160">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input v-model="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">

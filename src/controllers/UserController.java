@@ -36,6 +36,22 @@ public class UserController {
 		return null;
 	}
 	
+	private static String validateForProfile(Korisnik k) {
+		if (k.getEmail() == null) return "E-mail je obavezno polje";
+		if (k.getEmail().equals("")) return "E-mail je obavezno polje";
+		
+		if (k.getIme() == null) return "Ime je obavezno polje";
+		if (k.getIme().equals("")) return "Ime je obavezno polje";
+		
+		if (k.getLozinka() == null) return "Lozinka je obavezno polje";
+		if (k.getLozinka().equals("")) return "Lozinka je obavezno polje";
+		
+		if (k.getPrezime() == null) return "Prezime je obavezno polje";
+		if (k.getPrezime().equals("")) return "Prezime je obavezno polje";
+
+		return null;
+	}
+	
 	public static Route verifyLogin = (req,res) -> {
 		res.type("application/json");
 		
@@ -241,7 +257,7 @@ public class UserController {
 			return "Los format zahteva";
 		}
 		
-		String result = validate(k);
+		String result = validateForProfile(k);
 		if (result != null) {
 			res.status(400);
 			return result;

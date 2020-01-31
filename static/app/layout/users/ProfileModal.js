@@ -58,7 +58,8 @@ Vue.component("profile_modal", {
             if(this.validate()) {
                 var self = this;
                 axios
-                .post("rest/Users/updateProfile", {"email" : self.user.email,"ime" : self.user.ime, "prezime" : self.user.prezime, "lozinka" : self.user.lozinka})
+                .post("rest/Users/updateProfile", {"email" : self.user.email,"ime" : self.user.ime,
+                                                   "prezime" : self.user.prezime, "lozinka" : self.user.lozinka})
                 .then(response => {
                     this.$emit("changeProfile", response.data);
                     $("#profileModal").modal('hide');
