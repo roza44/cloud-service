@@ -49,7 +49,7 @@ Vue.component("monthlyBill", {
                 <h4>Ukupna cena: {{ukupnaCena}} evra</h4>
             </div>
 
-            <div v-else>
+            <div v-else style="padding-left:15px">
                 Odaberite period za obračunavanje
             </div>
         </default_layout>
